@@ -1,6 +1,7 @@
 import './globals.css';
 import { AuthProvider } from '@/lib/auth';
 import { ToastProvider } from '@/components/ToastContext';
+import { Analytics } from '@vercel/analytics/next';
 
 export const metadata = {
   title: 'EQuiz - College Quiz Management System',
@@ -21,6 +22,7 @@ export default function RootLayout({ children }) {
             {children}
           </ToastProvider>
         </AuthProvider>
+        <Analytics />
       </body>
     </html>
   );
