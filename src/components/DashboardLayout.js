@@ -1,12 +1,33 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 export default function DashboardLayout({ children, user, logout, menuItems, role }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [theme, setTheme] = useState('dark');
   const pathname = usePathname();
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    setTheme(savedTheme);
+    if (savedTheme === 'light') {
+      document.documentElement.classList.remove('dark');
+      document.documentElement.classList.add('light');
+    } else {
+      document.documentElement.classList.remove('light');
+      document.documentElement.classList.add('dark');
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+    localStorage.setItem('theme', newTheme);
+    document.documentElement.classList.remove('light', 'dark');
+    document.documentElement.classList.add(newTheme);
+  };
 
   return (
     <div className="min-h-screen flex bg-[var(--color-surface)]">
@@ -97,6 +118,23 @@ export default function DashboardLayout({ children, user, logout, menuItems, rol
                 <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-success)]" />
                 <span className="text-[9px] font-bold uppercase text-[var(--color-primary-light)] tracking-widest">{role} Portal</span>
              </div>
+
+             {/* Theme Toggle */}
+             <button onClick={toggleTheme} className="p-2 rounded-full border border-[var(--color-border)] hover:bg-[var(--color-surface-hover)] transition-all shadow-sm">
+               {theme === 'dark' ? (
+                 <svg className="w-4 h-4 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+               ) : (
+                 <svg className="w-4 h-4 text-slate-800" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+               )}
+             </button>
+
+             {/* Header Logout Button */}
+             <button onClick={logout} className="flex items-center justify-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold text-[var(--color-danger)] hover:bg-[var(--color-danger)]/10 transition-all border border-transparent hover:border-[var(--color-danger)]/20">
+               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+               </svg>
+               <span className="hidden sm:inline">Logout</span>
+             </button>
           </div>
         </header>
 

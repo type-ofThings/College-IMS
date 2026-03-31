@@ -6,18 +6,49 @@
   --color-primary-light: #6366f1;
   --color-secondary: #0ea5e9;
   --color-accent: #f59e0b;
-  --color-surface: #0f172a;
-  --color-surface-light: #1e293b;
-  --color-surface-card: #1e293b;
-  --color-surface-hover: #334155;
-  --color-text-primary: #f8fafc;
-  --color-text-secondary: #cbd5e1;
-  --color-text-muted: #94a3b8;
-  --color-border: #1e293b;
-  --color-border-light: #334155;
   --color-success: #10b981;
   --color-danger: #f43f5e;
   --color-warning: #f59e0b;
+
+  --color-surface: var(--theme-surface);
+  --color-surface-light: var(--theme-surface-light);
+  --color-surface-card: var(--theme-surface-card);
+  --color-surface-hover: var(--theme-surface-hover);
+  --color-text-primary: var(--theme-text-primary);
+  --color-text-secondary: var(--theme-text-secondary);
+  --color-text-muted: var(--theme-text-muted);
+  --color-border: var(--theme-border);
+  --color-border-light: var(--theme-border-light);
+}
+
+@layer base {
+  :root {
+    --theme-surface: #f8fafc;
+    --theme-surface-light: #ffffff;
+    --theme-surface-card: #ffffff;
+    --theme-surface-hover: #f1f5f9;
+    --theme-text-primary: #0f172a;
+    --theme-text-secondary: #334155;
+    --theme-text-muted: #64748b;
+    --theme-border: #e2e8f0;
+    --theme-border-light: #cbd5e1;
+    --glass-bg: rgba(255, 255, 255, 0.85);
+    --glass-border: rgba(0, 0, 0, 0.05);
+  }
+
+  .dark {
+    --theme-surface: #0f172a;
+    --theme-surface-light: #1e293b;
+    --theme-surface-card: #1e293b;
+    --theme-surface-hover: #334155;
+    --theme-text-primary: #f8fafc;
+    --theme-text-secondary: #cbd5e1;
+    --theme-text-muted: #94a3b8;
+    --theme-border: #1e293b;
+    --theme-border-light: #334155;
+    --glass-bg: rgba(15, 23, 42, 0.85);
+    --glass-border: rgba(255, 255, 255, 0.05);
+  }
 }
 
 @layer base {
@@ -62,9 +93,9 @@
   }
 
   .glass {
-    background: rgba(15, 23, 42, 0.8);
+    background: var(--glass-bg);
     backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
   }
 
   .gradient-text {
