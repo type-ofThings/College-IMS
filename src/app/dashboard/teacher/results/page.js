@@ -54,10 +54,10 @@ export default function StudentResultsPage() {
 
   return (
     <div className="space-y-8 animate-fade-in pb-10">
-      <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+      <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 border-b border-[var(--color-border)] pb-4">
         <div>
-          <h1 className="text-xl font-bold text-white tracking-tight">Performance Analytics</h1>
-          <p className="text-[10px] text-slate-500 mt-1 font-bold uppercase tracking-widest italic">Consolidated assessment results and statistical trends.</p>
+          <h1 className="text-xl font-bold text-[var(--color-text-primary)] tracking-tight">Performance Analytics</h1>
+          <p className="text-[10px] text-[var(--color-text-muted)] mt-1 font-bold uppercase tracking-widest italic">Consolidated assessment results and statistical trends.</p>
         </div>
 
         <div className="relative w-full xl:w-80">
@@ -67,7 +67,7 @@ export default function StudentResultsPage() {
             placeholder="Search records..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs font-bold text-white focus:outline-none focus:border-primary placeholder:text-slate-600 transition-all"
+            className="w-full pl-10 pr-4 py-2 rounded-xl bg-[var(--color-surface-hover)] border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-primary)] focus:outline-none focus:border-primary placeholder:text-[var(--color-text-muted)]/50 transition-all"
           />
         </div>
       </div>
@@ -87,11 +87,11 @@ export default function StudentResultsPage() {
               <div className="h-64">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={performance}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" vertical={false} />
-                    <XAxis dataKey="title" stroke="#64748b" fontSize={10} tickLine={false} axisLine={false} />
-                    <YAxis stroke="#64748b" fontSize={10} tickLine={false} axisLine={false} />
+                    <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
+                    <XAxis dataKey="title" stroke="var(--color-text-muted)" fontSize={10} tickLine={false} axisLine={false} />
+                    <YAxis stroke="var(--color-text-muted)" fontSize={10} tickLine={false} axisLine={false} />
                     <Tooltip 
-                      contentStyle={{ backgroundColor: '#0f172a', border: '1px solid #1e293b', borderRadius: '12px', fontSize: '12px' }}
+                      contentStyle={{ backgroundColor: 'var(--color-surface-card)', border: '1px solid var(--color-border)', borderRadius: '12px', fontSize: '12px' }}
                       itemStyle={{ fontWeight: 'bold' }}
                     />
                     <Bar dataKey="avgScore" fill="#3b82f6" radius={[4, 4, 0, 0]} barSize={32} name="Avg %" />
@@ -102,27 +102,27 @@ export default function StudentResultsPage() {
 
             {/* Global Leaderboard Widget */}
             <div className="formal-card p-5">
-              <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] mb-6">Global Top Performers</h3>
+              <h3 className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-[0.2em] mb-6">Global Top Performers</h3>
               <div className="space-y-4">
                 {leaderboard.slice(0, 5).map((student, i) => (
-                  <div key={student._id} className="flex items-center justify-between p-3 rounded-xl bg-slate-900/50 border border-slate-800/50 hover:border-primary/30 transition-all group">
+                  <div key={student._id} className="flex items-center justify-between p-3 rounded-xl bg-[var(--color-surface-hover)]/50 border border-[var(--color-border)]/50 hover:border-primary/30 transition-all group">
                     <div className="flex items-center gap-3">
                       <div className={`w-6 h-6 rounded-lg flex items-center justify-center text-[10px] font-black shadow-inner ${
                         i === 0 ? 'bg-amber-500 text-amber-950' : 
                         i === 1 ? 'bg-slate-300 text-slate-900' : 
                         i === 2 ? 'bg-amber-700 text-amber-100' : 
-                        'bg-slate-800 text-slate-400'
+                        'bg-[var(--color-surface-hover)] text-[var(--color-text-muted)]'
                       }`}>
                         {i + 1}
                       </div>
                       <div className="min-w-0">
-                        <p className="text-xs font-bold text-white truncate max-w-[120px]">{student.name}</p>
-                        <p className="text-[9px] font-bold text-slate-600 uppercase tracking-tighter tabular-nums">{student.totalScore} Points</p>
+                        <p className="text-xs font-bold text-[var(--color-text-primary)] truncate max-w-[120px]">{student.name}</p>
+                        <p className="text-[9px] font-bold text-[var(--color-text-muted)] uppercase tracking-tighter tabular-nums">{student.totalScore} Points</p>
                       </div>
                     </div>
                     <div className="text-right">
                       <p className="text-[11px] font-black text-primary-light tabular-nums">{student.avgPercentage}%</p>
-                      <p className="text-[8px] font-bold text-slate-600 uppercase tracking-widest italic">{student.attemptsCount} Tests</p>
+                      <p className="text-[8px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest italic">{student.attemptsCount} Tests</p>
                     </div>
                   </div>
                 ))}
@@ -130,20 +130,20 @@ export default function StudentResultsPage() {
             </div>
           </div>
 
-          <div className="formal-card overflow-hidden transition-all duration-500 shadow-sm bg-slate-900/20">
-            <div className="px-6 py-4 border-b border-slate-800 bg-slate-900/40">
-              <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em]">Detailed Record Ledger</h3>
+          <div className="formal-card overflow-hidden transition-all duration-500 shadow-sm bg-[var(--color-surface-hover)]/20">
+            <div className="px-6 py-4 border-b border-[var(--color-border)] bg-[var(--color-surface-hover)]/40">
+              <h3 className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-[0.2em]">Detailed Record Ledger</h3>
             </div>
             
             {/* Desktop View */}
             <div className="hidden md:block overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="bg-slate-900/60 border-b border-slate-800">
-                    <th className="px-6 py-4 text-[9px] font-bold text-slate-500 uppercase tracking-[0.2em]">Student Identity</th>
-                    <th className="px-6 py-4 text-[9px] font-bold text-slate-500 uppercase tracking-[0.2em]">Assessment</th>
-                    <th className="px-6 py-4 text-[9px] font-bold text-slate-500 uppercase tracking-[0.2em] text-center">Outcome</th>
-                    <th className="px-6 py-4 text-[9px] font-bold text-slate-500 uppercase tracking-[0.2em] text-right">Completion Date</th>
+                  <tr className="bg-[var(--color-surface-hover)]/60 border-b border-[var(--color-border)]">
+                    <th className="px-6 py-4 text-[9px] font-bold text-[var(--color-text-muted)] uppercase tracking-[0.2em]">Student Identity</th>
+                    <th className="px-6 py-4 text-[9px] font-bold text-[var(--color-text-muted)] uppercase tracking-[0.2em]">Assessment</th>
+                    <th className="px-6 py-4 text-[9px] font-bold text-[var(--color-text-muted)] uppercase tracking-[0.2em] text-center">Outcome</th>
+                    <th className="px-6 py-4 text-[9px] font-bold text-[var(--color-text-muted)] uppercase tracking-[0.2em] text-right">Completion Date</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-800/40">
@@ -159,17 +159,17 @@ export default function StudentResultsPage() {
                       const percent = Math.round((attempt.score / attempt.totalQuestions) * 100);
                       const isPass = percent >= 50;
                       return (
-                        <tr key={i} className="group hover:bg-slate-800/30 transition-all">
+                        <tr key={i} className="group hover:bg-[var(--color-surface-hover)]/30 transition-all">
                           <td className="px-6 py-4">
                              <div className="flex flex-col">
-                               <span className="text-xs font-bold text-white leading-tight">{attempt.studentId?.name || 'Purged Account'}</span>
+                               <span className="text-xs font-bold text-[var(--color-text-primary)] leading-tight">{attempt.studentId?.name || 'Purged Account'}</span>
                                <span className="text-[10px] font-bold text-primary-light font-mono mt-0.5 tabular-nums opacity-70 uppercase">{attempt.studentId?.enrollmentNo || 'ID: UNKNOWN'}</span>
                              </div>
                           </td>
                           <td className="px-6 py-4">
                              <div className="flex flex-col">
-                               <span className="text-xs font-bold text-slate-300 leading-tight">{attempt.quizId?.title || 'Purged Assessment'}</span>
-                               <span className="text-[9px] font-bold text-slate-500 uppercase tracking-widest mt-1 italic">{attempt.quizId?.department || 'System'} Unit</span>
+                               <span className="text-xs font-bold text-[var(--color-text-primary)] leading-tight">{attempt.quizId?.title || 'Purged Assessment'}</span>
+                               <span className="text-[9px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest mt-1 italic">{attempt.quizId?.department || 'System'} Unit</span>
                              </div>
                           </td>
                           <td className="px-6 py-4">
@@ -178,9 +178,9 @@ export default function StudentResultsPage() {
                                  <span className={`text-[11px] font-bold transition-colors ${isPass ? 'text-emerald-500 border border-emerald-500/20' : 'text-rose-500 border border-rose-500/20'} px-2 py-0.5 rounded shadow-sm`}>
                                    {percent}%
                                  </span>
-                                 <span className="text-[10px] font-bold text-slate-500 tabular-nums">({attempt.score} / {attempt.totalQuestions})</span>
+                                 <span className="text-[10px] font-bold text-[var(--color-text-muted)] tabular-nums">({attempt.score} / {attempt.totalQuestions})</span>
                                </div>
-                               <div className="w-20 h-1 bg-slate-800 rounded-full overflow-hidden">
+                               <div className="w-20 h-1 bg-[var(--color-border)] rounded-full overflow-hidden">
                                  <div className={`h-full transition-all duration-700 ${isPass ? 'bg-emerald-500' : 'bg-rose-500'}`} style={{ width: `${percent}%` }} />
                                </div>
                              </div>
@@ -227,7 +227,7 @@ export default function StudentResultsPage() {
                                <p className="text-[10px] font-bold text-slate-300 mt-0.5 truncate max-w-[120px]">{attempt.quizId?.title}</p>
                             </div>
                          </div>
-                         <div className="flex items-center justify-between border-t border-slate-800/80 pt-2">
+                         <div className="flex items-center justify-between border-t border-[var(--color-border)]/80 pt-2">
                             <span className="text-[9px] font-bold uppercase tracking-widest text-slate-500">
                                {new Date(attempt.submittedAt).toLocaleDateString()}
                             </span>

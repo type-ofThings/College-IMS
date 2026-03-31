@@ -33,7 +33,7 @@ export default function DashboardLayout({ children, user, logout, menuItems, rol
     <div className="min-h-screen flex bg-[var(--color-surface)]">
       {/* Mobile drawer overlay */}
       <div 
-        className={`fixed inset-0 z-40 bg-slate-950/80 backdrop-blur-sm lg:hidden transition-opacity duration-300 ${
+        className={`fixed inset-0 z-40 bg-black/40 backdrop-blur-sm lg:hidden transition-opacity duration-300 ${
           sidebarOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
         onClick={() => setSidebarOpen(false)}
@@ -52,7 +52,7 @@ export default function DashboardLayout({ children, user, logout, menuItems, rol
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
               </svg>
             </div>
-            <span className="font-bold text-lg text-white tracking-tight uppercase">EQuiz</span>
+            <span className="font-bold text-lg text-[var(--color-text-primary)] tracking-tight uppercase">EQuiz</span>
           </Link>
         </div>
 
@@ -80,8 +80,8 @@ export default function DashboardLayout({ children, user, logout, menuItems, rol
         </nav>
 
         {/* Sidebar Footer User Section */}
-        <div className="p-4 border-t border-[var(--color-border)] bg-slate-900/50">
-          <div className="flex items-center gap-3 p-3 rounded-xl border border-[var(--color-border)] bg-slate-800/30 mb-2">
+        <div className="p-4 border-t border-[var(--color-border)] bg-[var(--color-surface-hover)]/50">
+          <div className="flex items-center gap-3 p-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)]/50 mb-2">
             <div className="w-8 h-8 rounded-lg gradient-bg flex items-center justify-center text-white text-xs font-bold shadow-inner">
               {user?.name?.charAt(0).toUpperCase()}
             </div>

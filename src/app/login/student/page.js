@@ -90,7 +90,7 @@ function StudentLoginContent() {
 
             <button
               type="submit" disabled={loading}
-              className="w-full py-3.5 rounded-xl gradient-bg text-[var(--color-text-primary)] text-[10px] font-bold uppercase tracking-[0.25em] shadow-lg shadow-primary/10 hover:brightness-110 active:scale-[0.98] transition-all disabled:opacity-50 flex items-center justify-center gap-3"
+              className="w-full py-3.5 rounded-xl gradient-bg text-white text-[10px] font-bold uppercase tracking-[0.25em] shadow-lg shadow-primary/10 hover:brightness-110 active:scale-[0.98] transition-all disabled:opacity-50 flex items-center justify-center gap-3"
             >
               {loading ? <LoadingSpinner size="sm" color="white" /> : 'Authorize Entrance'}
             </button>
@@ -104,7 +104,7 @@ function StudentLoginContent() {
           </form>
         </div>
         
-        <p className="text-center mt-8 text-[9px] font-bold text-slate-700 uppercase tracking-tight select-none opacity-50">
+        <p className="text-center mt-8 text-[9px] font-bold text-[var(--color-text-muted)] uppercase tracking-tight select-none opacity-50">
           Electronic Quiz Gateway • IT Infrastructure Management
         </p>
       </div>

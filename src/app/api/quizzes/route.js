@@ -4,6 +4,8 @@ import Quiz from '@/models/Quiz';
 import Question from '@/models/Question';
 import { verifyToken, requireRole } from '@/lib/auth-server';
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(req) {
   try {
     const authResult = verifyToken(req);

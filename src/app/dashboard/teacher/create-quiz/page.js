@@ -100,9 +100,9 @@ export default function CreateQuizPage() {
 
   return (
     <div className="max-w-4xl mx-auto space-y-6 animate-fade-in pb-10">
-      <div className="border-b border-slate-800 pb-4">
-        <h1 className="text-xl font-bold text-white tracking-tight">Construct New Assessment</h1>
-        <p className="text-[10px] text-slate-500 mt-1 font-bold uppercase tracking-widest italic">Manual entry or batch upload via CSV/Excel.</p>
+      <div className="border-b border-[var(--color-border)] pb-4">
+        <h1 className="text-xl font-bold text-[var(--color-text-primary)] tracking-tight">Construct New Assessment</h1>
+        <p className="text-[10px] text-[var(--color-text-muted)] mt-1 font-bold uppercase tracking-widest italic">Manual entry or question upload via CSV/Excel.</p>
       </div>
 
       {message && (
@@ -114,60 +114,60 @@ export default function CreateQuizPage() {
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Core Configuration */}
         <div className="formal-card p-6 space-y-6">
-          <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400 border-b border-slate-800 pb-2">I. Configuration</h2>
+          <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-text-muted)] border-b border-[var(--color-border)] pb-2">I. Configuration</h2>
           <div className="grid sm:grid-cols-2 gap-x-6 gap-y-4">
             <div className="col-span-full">
-              <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 ml-1">Title</label>
+              <label className="block text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest mb-1.5 ml-1">Title</label>
               <input type="text" required value={form.title}
                 onChange={(e) => setForm({ ...form, title: e.target.value })}
-                className="w-full px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 text-sm font-medium focus:outline-none focus:border-primary transition-all text-white"
+                className="w-full px-4 py-2 rounded-xl bg-[var(--color-surface-hover)] border border-[var(--color-border)] text-sm font-medium focus:outline-none focus:border-primary transition-all text-[var(--color-text-primary)]"
                 placeholder="e.g., Engineering Mathematics 101" />
             </div>
             <div>
-              <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 ml-1">Department</label>
+              <label className="block text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest mb-1.5 ml-1">Department</label>
               <select value={form.department}
                 onChange={(e) => setForm({ ...form, department: e.target.value })}
-                className="w-full px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 text-sm font-medium focus:outline-none focus:border-primary transition-all text-white">
+                className="w-full px-4 py-2 rounded-xl bg-[var(--color-surface-hover)] border border-[var(--color-border)] text-sm font-medium focus:outline-none focus:border-primary transition-all text-[var(--color-text-primary)]">
                 {departments.map(d => <option key={d} value={d}>{d}</option>)}
               </select>
             </div>
             <div>
-              <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 ml-1">Duration (Mins)</label>
+              <label className="block text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest mb-1.5 ml-1">Duration (Mins)</label>
               <input type="number" value={form.timeLimit}
                 onChange={(e) => setForm({ ...form, timeLimit: e.target.value })}
-                className="w-full px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 text-sm font-medium focus:outline-none focus:border-primary transition-all text-white"
+                className="w-full px-4 py-2 rounded-xl bg-[var(--color-surface-hover)] border border-[var(--color-border)] text-sm font-medium focus:outline-none focus:border-primary transition-all text-[var(--color-text-primary)]"
                 min="1" />
             </div>
             <div>
-              <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 ml-1">Question Subset</label>
+              <label className="block text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest mb-1.5 ml-1">Question Subset</label>
               <input type="number" value={form.questionsToAttempt}
                 onChange={(e) => setForm({ ...form, questionsToAttempt: e.target.value })}
-                className="w-full px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 text-sm font-medium focus:outline-none focus:border-primary transition-all text-white"
+                className="w-full px-4 py-2 rounded-xl bg-[var(--color-surface-hover)] border border-[var(--color-border)] text-sm font-medium focus:outline-none focus:border-primary transition-all text-[var(--color-text-primary)]"
                 placeholder={`All (${questions.length})`} min="1" />
             </div>
             <div>
-              <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 ml-1">Access Credentials</label>
+              <label className="block text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest mb-1.5 ml-1">Access Credentials</label>
               <input type="text" value={form.password}
                 onChange={(e) => setForm({ ...form, password: e.target.value })}
-                className="w-full px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 text-sm font-medium focus:outline-none focus:border-primary transition-all text-white font-mono"
+                className="w-full px-4 py-2 rounded-xl bg-[var(--color-surface-hover)] border border-[var(--color-border)] text-sm font-medium focus:outline-none focus:border-primary transition-all text-[var(--color-text-primary)] font-mono"
                 placeholder="Password (Optional)" />
             </div>
 
             {/* Scheduling Section */}
-            <div className="col-span-full pt-4 border-t border-slate-800 mt-2">
+            <div className="col-span-full pt-4 border-t border-[var(--color-border)] mt-2">
               <h3 className="text-[9px] font-bold uppercase tracking-widest text-primary mb-4">Availability & Scheduling</h3>
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 ml-1">Active From</label>
+                  <label className="block text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest mb-1.5 ml-1">Active From</label>
                   <input type="datetime-local" value={form.activeFrom}
                     onChange={(e) => setForm({ ...form, activeFrom: e.target.value })}
-                    className="w-full px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs font-bold text-white uppercase focus:outline-none focus:border-primary" />
+                    className="w-full px-4 py-2 rounded-xl bg-[var(--color-surface-hover)] border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-primary)] uppercase focus:outline-none focus:border-primary" />
                 </div>
                 <div>
-                  <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 ml-1">Active Until</label>
+                  <label className="block text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest mb-1.5 ml-1">Active Until</label>
                   <input type="datetime-local" value={form.activeUntil}
                     onChange={(e) => setForm({ ...form, activeUntil: e.target.value })}
-                    className="w-full px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs font-bold text-white uppercase focus:outline-none focus:border-primary" />
+                    className="w-full px-4 py-2 rounded-xl bg-[var(--color-surface-hover)] border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-primary)] uppercase focus:outline-none focus:border-primary" />
                 </div>
               </div>
             </div>
@@ -176,8 +176,8 @@ export default function CreateQuizPage() {
               <label className="flex items-center gap-3 cursor-pointer group">
                 <input type="checkbox" checked={form.allowMultipleAttempts}
                   onChange={(e) => setForm({ ...form, allowMultipleAttempts: e.target.checked })}
-                  className="w-4 h-4 rounded border-slate-700 bg-slate-900 text-primary focus:ring-primary/20" />
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest group-hover:text-white transition-colors">Grant Permision for Multiple Entries</span>
+                  className="w-4 h-4 rounded border-[var(--color-border)] bg-[var(--color-surface-hover)] text-primary focus:ring-primary/20" />
+                <span className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest group-hover:text-[var(--color-text-primary)] transition-colors">Grant Permision for Multiple Entries</span>
               </label>
             </div>
           </div>
@@ -185,11 +185,11 @@ export default function CreateQuizPage() {
 
         {/* Question Management */}
         <div className="formal-card p-6">
-          <div className="flex items-center justify-between mb-8 border-b border-slate-800 pb-4">
-            <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400">II. Question Bank ({questions.length})</h2>
+          <div className="flex items-center justify-between mb-8 border-b border-[var(--color-border)] pb-4">
+            <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-text-muted)]">II. Question Bank ({questions.length})</h2>
             <div className="flex gap-2">
-              <label className="px-4 py-2 rounded-lg bg-slate-800 border border-slate-700 text-[10px] font-bold uppercase tracking-widest text-slate-400 cursor-pointer hover:bg-slate-700 hover:text-white transition-all">
-                📥 Batch Upload
+              <label className="px-4 py-2 rounded-lg bg-[var(--color-surface-hover)] border border-[var(--color-border)] text-[10px] font-bold uppercase tracking-widest text-[var(--color-text-muted)] cursor-pointer hover:bg-[var(--color-primary)]/10 hover:text-[var(--color-text-primary)] transition-all">
+                📥 Question Upload
                 <input type="file" accept=".csv,.xlsx" onChange={handleFileUpload} className="hidden" />
               </label>
               <button type="button" onClick={addQuestion}
@@ -201,12 +201,12 @@ export default function CreateQuizPage() {
 
           <div className="space-y-4">
             {questions.map((q, qIdx) => (
-              <div key={qIdx} className="p-4 rounded-xl border border-slate-800 bg-slate-900/30 space-y-4">
+              <div key={qIdx} className="p-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-hover)]/30 space-y-4">
                 <div className="flex items-start justify-between gap-4">
                   <span className="text-[10px] font-bold text-primary px-2 py-1 rounded bg-primary/10 border border-primary/20 mt-1 shrink-0 tabular-nums">Q{qIdx + 1}</span>
                   <textarea value={q.questionText} required
                     onChange={(e) => updateQuestion(qIdx, 'questionText', e.target.value)}
-                    className="flex-1 px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-sm font-medium text-white focus:outline-none focus:border-primary transition-all resize-none"
+                    className="flex-1 px-4 py-2.5 rounded-xl bg-[var(--color-surface-hover)] border border-[var(--color-border)] text-sm font-medium text-[var(--color-text-primary)] focus:outline-none focus:border-primary transition-all resize-none"
                     placeholder="Describe the question..." rows={2} />
                   {questions.length > 1 && (
                     <button type="button" onClick={() => removeQuestion(qIdx)}
@@ -221,7 +221,7 @@ export default function CreateQuizPage() {
                         className="shrink-0 w-3 h-3 text-emerald-500" title="Set as correct" />
                       <input type="text" required value={opt}
                         onChange={(e) => updateOption(qIdx, oIdx, e.target.value)}
-                        className={`flex-1 px-3 py-2 rounded-lg bg-slate-900 border text-xs font-medium focus:outline-none transition-all ${q.correctAnswer === oIdx ? 'border-emerald-500/50 text-white' : 'border-slate-800 text-slate-400 focus:border-primary'}`}
+                        className={`flex-1 px-3 py-2 rounded-lg bg-[var(--color-surface-hover)] border text-xs font-medium focus:outline-none transition-all ${q.correctAnswer === oIdx ? 'border-emerald-500/50 text-[var(--color-text-primary)]' : 'border-[var(--color-border)] text-[var(--color-text-muted)] focus:border-primary'}`}
                         placeholder={`Option ${String.fromCharCode(65 + oIdx)}`} />
                     </div>
                   ))}
@@ -237,7 +237,7 @@ export default function CreateQuizPage() {
             {loading ? <LoadingSpinner size="sm" /> : 'Finalize Assessment'}
           </button>
           <button type="button" onClick={() => router.back()}
-            className="flex-1 py-4 rounded-xl border border-slate-800 bg-slate-900 text-slate-400 text-xs font-bold uppercase tracking-widest hover:bg-slate-800 hover:text-white transition-all">
+            className="flex-1 py-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-hover)] text-[var(--color-text-muted)] text-xs font-bold uppercase tracking-widest hover:bg-[var(--color-surface-hover)]/80 hover:text-[var(--color-text-primary)] transition-all">
             Discard Changes
           </button>
         </div>

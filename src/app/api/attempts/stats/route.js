@@ -4,6 +4,9 @@ import Attempt from '@/models/Attempt';
 import Quiz from '@/models/Quiz';
 import { verifyToken, requireRole } from '@/lib/auth-server';
 
+export const dynamic = 'force-dynamic';
+
+
 // GET - Teacher stats overview
 export async function GET(req) {
   try {

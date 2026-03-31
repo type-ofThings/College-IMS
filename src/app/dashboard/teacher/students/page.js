@@ -87,8 +87,8 @@ export default function StudentsPage() {
       {/* Header Section */}
       <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 border-b border-slate-800 pb-4">
         <div>
-          <h1 className="text-xl font-bold text-white tracking-tight">Student Directory</h1>
-          <p className="text-[10px] text-slate-500 mt-1 font-bold uppercase tracking-widest italic">
+          <h1 className="text-xl font-bold text-[var(--color-text-primary)] tracking-tight">Student Directory</h1>
+          <p className="text-[10px] text-[var(--color-text-muted)] mt-1 font-bold uppercase tracking-widest italic">
             Total {students.length} students enrolled in your department.
           </p>
         </div>
@@ -101,7 +101,7 @@ export default function StudentsPage() {
               placeholder="Search directory..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs font-bold text-white focus:outline-none focus:border-primary placeholder:text-slate-600 transition-all"
+              className="w-full pl-10 pr-4 py-2 rounded-xl bg-[var(--color-surface-hover)] border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-primary)] focus:outline-none focus:border-primary placeholder:text-[var(--color-text-muted)]/50 transition-all"
             />
           </div>
           <div className="flex gap-2">
@@ -109,7 +109,7 @@ export default function StudentsPage() {
               className="flex-1 sm:flex-none px-4 py-2 rounded-xl gradient-bg text-white text-[10px] font-bold uppercase tracking-widest hover:brightness-110 active:scale-[0.98] transition-all shadow-md">
               + New Record
             </button>
-            <label className="flex-1 sm:flex-none px-4 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-[10px] font-bold uppercase tracking-widest cursor-pointer hover:bg-slate-700 transition-all flex items-center justify-center gap-2">
+            <label className="flex-1 sm:flex-none px-4 py-2 rounded-xl bg-[var(--color-surface-hover)] border border-[var(--color-border)] text-[var(--color-text-primary)] text-[10px] font-bold uppercase tracking-widest cursor-pointer hover:bg-[var(--color-primary)]/10 transition-all flex items-center justify-center gap-2">
               <span>📥</span> Batch Import
               <input type="file" accept=".xlsx,.xls" onChange={handleUpload} className="hidden" />
             </label>
@@ -119,27 +119,27 @@ export default function StudentsPage() {
 
       {/* Upload Summary */}
       {uploadSummary && (
-        <div className="formal-card p-6 border-primary/30 animate-slide-up relative bg-slate-900/50">
+        <div className="formal-card p-6 border-primary/30 animate-slide-up relative bg-[var(--color-surface-hover)]/50">
           <div className="flex items-center justify-between mb-6">
              <h3 className="text-[9px] font-bold uppercase tracking-[0.2em] text-primary">Import Analysis Summary</h3>
-             <button onClick={() => setUploadSummary(null)} className="text-[9px] font-bold text-slate-500 uppercase tracking-widest hover:text-white transition-colors">Acknowledge</button>
+             <button onClick={() => setUploadSummary(null)} className="text-[9px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest hover:text-[var(--color-text-primary)] transition-colors">Acknowledge</button>
           </div>
           <div className="grid grid-cols-3 gap-4">
-            <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 text-center">
-              <p className="text-2xl font-bold text-white mb-1 tabular-nums">{uploadSummary.total}</p>
-              <p className="text-[8px] font-bold text-slate-500 uppercase tracking-[0.2em]">Total</p>
+            <div className="bg-[var(--color-surface)] p-4 rounded-xl border border-[var(--color-border)] text-center">
+              <p className="text-2xl font-bold text-[var(--color-text-primary)] mb-1 tabular-nums">{uploadSummary.total}</p>
+              <p className="text-[8px] font-bold text-[var(--color-text-muted)] uppercase tracking-[0.2em]">Total</p>
             </div>
-            <div className="bg-slate-950 p-4 rounded-xl border border-emerald-500/10 text-center">
+            <div className="bg-[var(--color-surface)] p-4 rounded-xl border border-emerald-500/10 text-center">
               <p className="text-2xl font-bold text-emerald-500 mb-1 tabular-nums">{uploadSummary.success}</p>
               <p className="text-[8px] font-bold text-emerald-500/70 uppercase tracking-[0.2em]">Success</p>
             </div>
-            <div className="bg-slate-950 p-4 rounded-xl border border-rose-500/10 text-center">
+            <div className="bg-[var(--color-surface)] p-4 rounded-xl border border-rose-500/10 text-center">
               <p className="text-2xl font-bold text-rose-500 mb-1 tabular-nums">{uploadSummary.failed}</p>
               <p className="text-[8px] font-bold text-rose-500/70 uppercase tracking-[0.2em]">Conflicts</p>
             </div>
           </div>
           {uploadSummary.errors.length > 0 && (
-            <div className="mt-4 bg-slate-950 rounded-lg p-3 border border-rose-500/10 max-h-24 overflow-y-auto custom-scrollbar">
+            <div className="mt-4 bg-[var(--color-surface)] rounded-lg p-3 border border-rose-500/10 max-h-24 overflow-y-auto custom-scrollbar">
                {uploadSummary.errors.map((e, i) => (
                  <p key={i} className="text-[9px] text-rose-500/80 font-mono mb-1 last:mb-0 select-text">● {e}</p>
                ))}
@@ -150,36 +150,36 @@ export default function StudentsPage() {
 
       {/* Add Form Card */}
       {showAddForm && (
-        <form onSubmit={handleAddStudent} className="formal-card p-6 animate-slide-up bg-slate-900/40 relative">
+        <form onSubmit={handleAddStudent} className="formal-card p-6 animate-slide-up bg-[var(--color-surface-hover)]/40 relative">
           <div className="absolute top-0 left-0 w-full h-[2px] bg-primary opacity-50" />
-          <h3 className="text-[9px] font-bold uppercase tracking-[0.3em] text-slate-500 mb-6">Record Admission</h3>
+          <h3 className="text-[9px] font-bold uppercase tracking-[0.3em] text-[var(--color-text-muted)] mb-6">Record Admission</h3>
           <div className="grid sm:grid-cols-3 gap-4">
             <div className="space-y-1">
-              <p className="text-[8px] font-bold uppercase text-slate-500 tracking-widest ml-1">Enrollment ID</p>
+              <p className="text-[8px] font-bold uppercase text-[var(--color-text-muted)] tracking-widest ml-1">Enrollment ID</p>
               <input type="text" required placeholder="Identification Number" value={form.enrollmentNo}
                 onChange={(e) => setForm({ ...form, enrollmentNo: e.target.value })}
-                className="w-full px-4 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs font-bold text-white focus:outline-none focus:border-primary transition-all font-mono" />
+                className="w-full px-4 py-2 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-primary)] focus:outline-none focus:border-primary transition-all font-mono" />
             </div>
             <div className="space-y-1">
-              <p className="text-[8px] font-bold uppercase text-slate-500 tracking-widest ml-1">Legal Name</p>
+              <p className="text-[8px] font-bold uppercase text-[var(--color-text-muted)] tracking-widest ml-1">Legal Name</p>
               <input type="text" required placeholder="Full Name" value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
-                className="w-full px-4 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs font-bold text-white focus:outline-none focus:border-primary transition-all" />
+                className="w-full px-4 py-2 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-primary)] focus:outline-none focus:border-primary transition-all" />
             </div>
             <div className="space-y-1">
-              <p className="text-[8px] font-bold uppercase text-slate-500 tracking-widest ml-1">Specialization</p>
+              <p className="text-[8px] font-bold uppercase text-[var(--color-text-muted)] tracking-widest ml-1">Specialization</p>
               <input type="text" required placeholder="e.g., Computer Science" value={form.branch}
                 onChange={(e) => setForm({ ...form, branch: e.target.value })}
-                className="w-full px-4 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs font-bold text-white focus:outline-none focus:border-primary transition-all" />
+                className="w-full px-4 py-2 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-primary)] focus:outline-none focus:border-primary transition-all" />
             </div>
           </div>
-          <div className="flex gap-2 mt-8 pt-4 border-t border-slate-800">
+          <div className="flex gap-2 mt-8 pt-4 border-t border-[var(--color-border)]">
             <button type="submit" disabled={submitLoading}
               className="px-6 py-2.5 rounded-xl gradient-bg text-white text-[10px] font-bold uppercase tracking-widest active:scale-95 transition-all disabled:opacity-50">
               {submitLoading ? 'Registering...' : 'Validate & Save'}
             </button>
             <button type="button" onClick={() => setShowAddForm(false)}
-              className="px-6 py-2.5 rounded-xl bg-slate-800 text-slate-400 text-[10px] font-bold uppercase tracking-widest hover:text-white transition-all">
+              className="px-6 py-2.5 rounded-xl bg-[var(--color-surface-hover)] text-[var(--color-text-muted)] text-[10px] font-bold uppercase tracking-widest hover:text-[var(--color-text-primary)] transition-all">
               Discard
             </button>
           </div>
@@ -205,26 +205,26 @@ export default function StudentsPage() {
             <div className="overflow-x-auto">
               <table className="w-full text-left">
                 <thead>
-                  <tr className="bg-slate-900 shadow-inner border-b border-slate-800">
-                    <th className="px-6 py-4 text-[9px] font-bold text-slate-500 uppercase tracking-[0.2em]">ID Number</th>
-                    <th className="px-6 py-4 text-[9px] font-bold text-slate-500 uppercase tracking-[0.2em]">Student</th>
-                    <th className="px-6 py-4 text-[9px] font-bold text-slate-500 uppercase tracking-[0.2em]">Specialization</th>
-                    <th className="px-6 py-4 text-[9px] font-bold text-slate-500 uppercase tracking-[0.2em]">Department</th>
-                    <th className="px-6 py-4 text-right text-[9px] font-bold text-slate-500 uppercase tracking-[0.2em]">Action</th>
+                  <tr className="bg-[var(--color-surface-hover)] shadow-inner border-b border-[var(--color-border)]">
+                    <th className="px-6 py-4 text-[9px] font-bold text-[var(--color-text-muted)] uppercase tracking-[0.2em]">ID Number</th>
+                    <th className="px-6 py-4 text-[9px] font-bold text-[var(--color-text-muted)] uppercase tracking-[0.2em]">Student</th>
+                    <th className="px-6 py-4 text-[9px] font-bold text-[var(--color-text-muted)] uppercase tracking-[0.2em]">Specialization</th>
+                    <th className="px-6 py-4 text-[9px] font-bold text-[var(--color-text-muted)] uppercase tracking-[0.2em]">Department</th>
+                    <th className="px-6 py-4 text-right text-[9px] font-bold text-[var(--color-text-muted)] uppercase tracking-[0.2em]">Action</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-800/40">
                   {filteredStudents.map((student) => (
-                    <tr key={student._id} className="group hover:bg-slate-800/20 transition-all">
+                    <tr key={student._id} className="group hover:bg-[var(--color-primary)]/5 transition-all">
                       <td className="px-6 py-4">
                          <span className="text-[11px] font-bold font-mono text-primary-light tracking-wider tabular-nums">{student.enrollmentNo}</span>
                       </td>
                       <td className="px-6 py-4">
                          <div className="flex items-center gap-3">
-                           <div className="w-7 h-7 rounded bg-slate-800 border border-slate-700 flex items-center justify-center text-[10px] text-white font-bold uppercase tabular-nums">
+                           <div className="w-7 h-7 rounded bg-[var(--color-surface-hover)] border border-[var(--color-border)] flex items-center justify-center text-[10px] text-[var(--color-text-primary)] font-bold uppercase tabular-nums">
                               {student.name.charAt(0)}
                            </div>
-                           <span className="text-xs font-bold text-white">{student.name}</span>
+                           <span className="text-xs font-bold text-[var(--color-text-primary)]">{student.name}</span>
                          </div>
                       </td>
                       <td className="px-6 py-4">
@@ -259,7 +259,7 @@ export default function StudentsPage() {
                         {student.name.charAt(0)}
                       </div>
                       <div>
-                        <p className="text-xs font-bold text-white leading-tight">{student.name}</p>
+                        <p className="text-xs font-bold text-[var(--color-text-primary)] leading-tight">{student.name}</p>
                         <p className="text-[10px] font-mono font-bold text-primary-light mt-0.5 tracking-tighter tabular-nums">{student.enrollmentNo}</p>
                       </div>
                     </div>
@@ -267,9 +267,9 @@ export default function StudentsPage() {
                       <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                     </button>
                   </div>
-                  <div className="flex items-center justify-between border-t border-slate-800 pt-2">
-                    <span className="text-[9px] font-bold uppercase tracking-widest text-slate-500">{student.branch}</span>
-                    <span className="text-[8px] font-bold uppercase text-slate-600 tracking-tighter tabular-nums">
+                  <div className="flex items-center justify-between border-t border-[var(--color-border)] pt-2">
+                    <span className="text-[9px] font-bold uppercase tracking-widest text-[var(--color-text-muted)]">{student.branch}</span>
+                    <span className="text-[8px] font-bold uppercase text-[var(--color-text-muted)] tracking-tighter tabular-nums">
                       DEPT: {student.department}
                     </span>
                   </div>

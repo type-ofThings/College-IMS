@@ -43,7 +43,7 @@ export default function TeacherDashboard() {
   return (
     <div className="space-y-8 animate-fade-in">
       <div>
-        <h1 className="text-2xl font-bold">Welcome back, {user?.name} 👋</h1>
+        <h1 className="text-2xl font-bold text-[var(--color-text-primary)]">Welcome back, {user?.name} 👋</h1>
         <p className="text-[var(--color-text-muted)] text-sm mt-1">Here&apos;s your dashboard overview</p>
       </div>
 
@@ -69,7 +69,7 @@ export default function TeacherDashboard() {
 
       {/* Recent Activity */}
       <div className="glass rounded-2xl p-6">
-        <h2 className="text-lg font-semibold mb-4">Recent Activity</h2>
+        <h2 className="text-lg font-semibold mb-4 text-[var(--color-text-primary)]">Recent Activity</h2>
         {stats?.recentAttempts?.length > 0 ? (
           <div className="space-y-3">
             {stats.recentAttempts.map((attempt, i) => (
@@ -79,7 +79,7 @@ export default function TeacherDashboard() {
                     {attempt.studentId?.name?.charAt(0) || '?'}
                   </div>
                   <div>
-                    <p className="text-sm font-medium">{attempt.studentId?.name || 'Student'}</p>
+                    <p className="text-sm font-medium text-[var(--color-text-primary)]">{attempt.studentId?.name || 'Student'}</p>
                     <p className="text-xs text-[var(--color-text-muted)]">{attempt.quizId?.title || 'Quiz'}</p>
                   </div>
                 </div>
@@ -107,7 +107,7 @@ export default function TeacherDashboard() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
             </svg>
           </div>
-          <h3 className="font-semibold">Create New Quiz</h3>
+          <h3 className="font-semibold text-[var(--color-text-primary)]">Create New Quiz</h3>
           <p className="text-sm text-[var(--color-text-muted)] mt-1">Add questions manually or upload Excel/CSV</p>
         </a>
         <a href="/dashboard/teacher/students" className="glass rounded-2xl p-5 hover:bg-[var(--color-surface-hover)]/50 transition-all group">
@@ -116,7 +116,7 @@ export default function TeacherDashboard() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
             </svg>
           </div>
-          <h3 className="font-semibold">Manage Students</h3>
+          <h3 className="font-semibold text-[var(--color-text-primary)]">Manage Students</h3>
           <p className="text-sm text-[var(--color-text-muted)] mt-1">Add students or upload Excel file</p>
         </a>
       </div>
