@@ -52,19 +52,26 @@ export default function StudentDashboard() {
     if (user) loadData();
   }, [user, authLoading, router, loadData]);
 
-  if (authLoading || !user) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-[var(--color-surface)]">
-        <LoadingSpinner size="lg" />
-      </div>
-    );
-  }
-
+  // Flicker Fix: Internalize auth loading to maintain layout shell
   const attemptedQuizIds = new Set((performance?.recentAttempts || []).map(a => a.quizId?._id));
-  const availableQuizzes = quizzes.filter(q => !attemptedQuizIds.has(q._id));
+  
+  // Categorize quizzes for better student UX
+  const categorizedQuizzes = quizzes.map(q => ({
+    ...q,
+    isAttempted: attemptedQuizIds.has(q._id)
+  }));
 
   return (
     <div className="space-y-6 animate-fade-in pb-10">
+      {(authLoading || !user || loading) ? (
+        <div className="flex flex-col items-center justify-center py-60 space-y-4">
+           <LoadingSpinner size="lg" />
+           <p className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest animate-pulse">
+             {authLoading ? 'Verifying Identity...' : 'Synchronizing Data...'}
+           </p>
+        </div>
+      ) : (
+        <>
       {/* Tab Navigation Header */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-[var(--color-border)] pb-4">
         <div className="flex items-center gap-2">
@@ -99,12 +106,7 @@ export default function StudentDashboard() {
         </div>
       </div>
 
-      {loading ? (
-        <div className="flex flex-col items-center justify-center py-40 space-y-4">
-           <LoadingSpinner size="lg" />
-           <p className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest">Loading metrics...</p>
-        </div>
-      ) : (
+      {/* Viewport content is now wrapped in the main conditional above */}
         <div className="animate-fade-in">
           {/* Overview Tab Content */}
           {activeTab === 'overview' && (
@@ -282,49 +284,75 @@ export default function StudentDashboard() {
           {activeTab === 'quizzes' && (
             <div className="animate-slide-up space-y-6">
               <div className="flex items-center justify-between border-b border-[var(--color-border)] pb-3">
-                <h2 className="text-xs font-bold uppercase tracking-widest text-[var(--color-text-muted)] font-mono">Open Assessments</h2>
-                <div className="text-[9px] font-bold text-[var(--color-text-primary)] bg-[var(--color-surface-hover)] px-3 py-1 rounded-md border border-[var(--color-border)]">
-                  {availableQuizzes.length} ACTIVE
+                <h2 className="text-xs font-bold uppercase tracking-widest text-[var(--color-text-muted)] font-mono">Assigned Assessments</h2>
+                <div className="flex items-center gap-2">
+                  <span className="text-[8px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest mr-2">Status Key:</span>
+                  <div className="flex gap-2">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500" title="Active" />
+                    <span className="w-2 h-2 rounded-full bg-rose-500" title="Locked/Expired" />
+                    <span className="w-2 h-2 rounded-full bg-primary" title="Completed" />
+                  </div>
                 </div>
               </div>
-              {availableQuizzes.length === 0 ? (
-                <div className="formal-card p-16 text-center border-dashed">
+
+              {categorizedQuizzes.length === 0 ? (
+                <div className="formal-card p-16 text-center border-dashed border-[var(--color-border)]">
                   <div className="text-4xl mb-4 grayscale">📭</div>
                   <p className="text-xs font-bold uppercase tracking-widest text-[var(--color-text-primary)]">All Clear</p>
-                  <p className="text-[10px] text-[var(--color-text-muted)] mt-2 font-medium">No pending quizzes assigned to your department.</p>
+                  <p className="text-[10px] text-[var(--color-text-muted)] mt-2 font-medium italic">No assessments currently assigned to {user?.department} department.</p>
                 </div>
               ) : (
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                  {availableQuizzes.map((quiz) => (
-                    <div key={quiz._id} className="formal-card p-6 group hover:border-primary transition-all flex flex-col justify-between">
+                  {categorizedQuizzes.map((quiz) => (
+                    <div key={quiz._id} className={`formal-card p-6 group transition-all flex flex-col justify-between ${
+                      quiz.isAttempted ? 'opacity-90 grayscale-[0.3]' : 'hover:border-primary/50'
+                    }`}>
                       <div className="mb-6">
-                        <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center justify-between mb-4">
                            <span className="text-[8px] font-black uppercase text-primary tracking-tighter border border-primary/20 px-2 py-0.5 rounded-sm">
                              {quiz.department}
                            </span>
-                           {quiz.status !== 'active' && (
-                             <span className="text-[8px] font-black uppercase text-rose-500 tracking-tighter border border-rose-500/20 px-2 py-0.5 rounded-sm">
-                               {quiz.status}
-                             </span>
-                           )}
+                           <div className="flex items-center gap-1.5">
+                             {quiz.isAttempted ? (
+                               <span className="text-[8px] font-black uppercase text-primary tracking-tighter bg-primary/10 border border-primary/30 px-2 py-0.5 rounded-sm">
+                                 Completed
+                               </span>
+                             ) : (
+                               <span className={`text-[8px] font-black uppercase tracking-tighter px-2 py-0.5 rounded-sm border ${
+                                 quiz.status === 'active' 
+                                   ? 'text-emerald-500 border-emerald-500/20 bg-emerald-500/5' 
+                                   : 'text-rose-500 border-rose-500/20 bg-rose-500/5'
+                               }`}>
+                                 {quiz.status}
+                               </span>
+                             )}
+                           </div>
                         </div>
-                        <h3 className="font-bold text-md text-[var(--color-text-primary)] group-hover:text-primary-light transition-colors">{quiz.title}</h3>
-                        <div className="mt-3 flex items-center gap-3 text-[9px] font-bold text-slate-500 uppercase tracking-widest">
+                        <h3 className="font-bold text-md text-[var(--color-text-primary)] group-hover:text-primary transition-colors leading-snug">{quiz.title}</h3>
+                        <div className="mt-4 flex items-center gap-3 text-[9px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest border-t border-[var(--color-border)]/30 pt-3">
                           <span className="flex items-center gap-1.5">⏱ {quiz.timeLimit}m</span>
                           <span className="opacity-20">•</span>
                           <span className="flex items-center gap-1.5">❓ {quiz.questionsToAttempt || '--'} Qs</span>
                         </div>
                       </div>
                       
-                      {quiz.status === 'active' ? (
+                      {quiz.isAttempted ? (
+                        <button onClick={() => setActiveTab('history')}
+                          className="w-full text-center py-3 rounded-lg border border-[var(--color-border)] text-[var(--color-text-muted)] text-[10px] font-bold uppercase tracking-widest hover:bg-[var(--color-surface-hover)] transition-all">
+                          View Performance
+                        </button>
+                      ) : quiz.status === 'active' ? (
                         <Link href={`/quiz/${quiz._id}`}
                           className="w-full text-center py-3 rounded-lg gradient-bg text-white text-[10px] font-bold uppercase tracking-[0.2em] shadow-lg shadow-primary/10 hover:brightness-110 active:scale-[0.98] transition-all">
                           Start Attempt
                         </Link>
                       ) : (
                         <button disabled
-                          className="w-full text-center py-3 rounded-lg bg-[var(--color-surface-hover)] border border-[var(--color-border)] text-[var(--color-text-muted)] text-[10px] font-bold uppercase tracking-widest opacity-60">
-                          {quiz.status === 'upcoming' ? `Starts: ${new Date(quiz.activeFrom).toLocaleDateString()}` : 'Closed'}
+                          className="w-full text-center py-3 rounded-lg bg-[var(--color-surface-hover)] border border-[var(--color-border)] text-[var(--color-text-muted)] text-[10px] font-bold uppercase tracking-widest opacity-60 flex items-center justify-center gap-2">
+                          <span className="text-[10px]">🔒</span>
+                          {quiz.status === 'upcoming' 
+                            ? `Starts: ${new Date(quiz.activeFrom).toLocaleDateString([], {month: 'short', day: 'numeric'})}` 
+                            : quiz.status === 'locked' ? 'Access Restricted' : 'Evaluation Closed'}
                         </button>
                       )}
                     </div>
@@ -399,6 +427,7 @@ export default function StudentDashboard() {
             </div>
           )}
         </div>
+        </>
       )}
     </div>
   );

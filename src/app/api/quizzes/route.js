@@ -65,7 +65,7 @@ export async function GET(req) {
     if (role === 'teacher') {
       filter = { createdBy: id };
     } else {
-      filter = { department, isActive: true };
+      filter = { department };
     }
 
     const quizzes = await Quiz.find(filter)
@@ -75,7 +75,8 @@ export async function GET(req) {
     const now = new Date();
     const processedQuizzes = quizzes.map(quiz => {
       let status = 'active';
-      if (quiz.activeFrom && now < new Date(quiz.activeFrom)) status = 'upcoming';
+      if (!quiz.isActive) status = 'locked';
+      else if (quiz.activeFrom && now < new Date(quiz.activeFrom)) status = 'upcoming';
       else if (quiz.activeUntil && now > new Date(quiz.activeUntil)) status = 'expired';
       
       return { 

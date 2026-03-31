@@ -193,15 +193,15 @@ export default function QuizAttemptPage({ params }) {
             </div>
           </div>
 
-          {quiz?.status !== 'active' ? (
-            <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-500 text-xs font-bold flex items-center gap-3 justify-center">
-              <span>🔒</span> Quiz is currently {quiz?.status}.
+          {quiz.status !== 'active' ? (
+            <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-500 text-xs font-bold flex items-center gap-3 justify-center capitalize">
+              <span>🔒</span> {quiz.status === 'locked' ? 'Access Restricted' : `Quiz is currently ${quiz.status}`}
             </div>
           ) : requiresPassword ? (
             <div className="space-y-4">
               <input type="text" value={quizPassword}
                 onChange={(e) => setQuizPassword(e.target.value)}
-                className="w-full px-5 py-3.5 rounded-xl bg-[var(--color-surface-hover)] border border-[var(--color-border)] text-center text-base font-bold tracking-[0.3em] focus:outline-none focus:border-indigo-500 transition-all placeholder:tracking-normal placeholder:font-medium placeholder:text-xs text-[var(--color-text-primary)]"
+                className="w-full px-5 py-3.5 rounded-xl bg-[var(--color-surface-hover)] border border-[var(--color-border)] text-center text-base font-bold tracking-[0.3em] focus:outline-none focus:border-primary transition-all placeholder:tracking-normal placeholder:font-medium placeholder:text-xs text-[var(--color-text-primary)]"
                 placeholder="Enter Access Password" />
               {passwordError && <p className="text-[10px] font-bold text-rose-500 uppercase tracking-wide">{passwordError}</p>}
               <button 
@@ -218,7 +218,7 @@ export default function QuizAttemptPage({ params }) {
                    }
                 }} 
                 disabled={submitting || !quizPassword}
-                className="w-full py-4 rounded-xl gradient-bg text-white font-bold text-xs uppercase tracking-widest shadow-lg shadow-indigo-500/10 active:scale-[0.98] transition-all disabled:opacity-50"
+                className="w-full py-4 rounded-xl gradient-bg text-white font-bold text-xs uppercase tracking-widest shadow-lg active:scale-[0.98] transition-all disabled:opacity-50"
               >
                 {submitting ? 'Verifying...' : 'Begin Assessment'}
               </button>
@@ -273,13 +273,13 @@ export default function QuizAttemptPage({ params }) {
                 <button key={oIdx} onClick={() => setAnswers({ ...answers, [currentQuestion._id]: oIdx })}
                   className={`group w-full text-left p-4 rounded-xl border-2 transition-all duration-200 flex items-center gap-4 ${
                     isSelected
-                      ? 'border-indigo-500/50 bg-indigo-500/5 shadow-md'
+                      ? 'border-primary/50 bg-primary/5 shadow-md'
                       : 'border-[var(--color-border)] hover:border-[var(--color-primary)]/50 hover:bg-[var(--color-primary)]/5'
                   }`}
                   style={{ minHeight: '56px' }}>
                   
                   <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-[11px] font-bold transition-all border ${
-                    isSelected ? 'bg-indigo-500 text-white border-transparent' : 'bg-[var(--color-surface-hover)] border-[var(--color-border)] text-[var(--color-text-muted)]'
+                    isSelected ? 'bg-primary text-white border-transparent' : 'bg-[var(--color-surface-hover)] border-[var(--color-border)] text-[var(--color-text-muted)]'
                   }`}>
                     {String.fromCharCode(65 + oIdx)}
                   </div>
@@ -330,13 +330,13 @@ export default function QuizAttemptPage({ params }) {
 
           {currentQ === questions.length - 1 ? (
             <button onClick={handleSubmit} disabled={submitting}
-              className="flex-1 sm:flex-none h-12 px-10 rounded-xl gradient-bg text-white text-[10px] font-bold uppercase tracking-widest shadow-lg shadow-indigo-500/10 active:scale-95 transition-all">
+              className="flex-1 sm:flex-none h-12 px-10 rounded-xl gradient-bg text-white text-[10px] font-bold uppercase tracking-widest shadow-lg active:scale-95 transition-all">
               {submitting ? 'Processing...' : 'Submit Entry'}
             </button>
           ) : (
             <button 
               onClick={() => setCurrentQ(Math.min(questions.length - 1, currentQ + 1))}
-              className="flex-1 sm:flex-none h-12 px-10 rounded-xl gradient-bg text-white text-[10px] font-bold uppercase tracking-widest shadow-lg shadow-indigo-500/10 active:scale-95 transition-all">
+              className="flex-1 sm:flex-none h-12 px-10 rounded-xl gradient-bg text-white text-[10px] font-bold uppercase tracking-widest shadow-lg active:scale-95 transition-all">
               Continue
             </button>
           )}
