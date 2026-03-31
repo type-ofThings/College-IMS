@@ -67,7 +67,7 @@ export default function DashboardLayout({ children, user, logout, menuItems, rol
                 className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 group ${
                   isActive
                     ? 'bg-[var(--color-primary)] text-white shadow-lg shadow-[var(--color-primary)]/20'
-                    : 'text-[var(--color-text-secondary)] hover:text-white hover:bg-[var(--color-surface-hover)]'
+                    : 'text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] hover:bg-[var(--color-primary)]/10'
                 }`}
               >
                 <div className={`transition-transform duration-300 group-hover:rotate-6 ${isActive ? 'text-white' : 'text-[var(--color-primary-light)]'}`}>
