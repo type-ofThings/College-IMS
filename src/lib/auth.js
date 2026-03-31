@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect, useMemo } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 const AuthContext = createContext(null);
@@ -36,12 +36,8 @@ export function AuthProvider({ children }) {
     router.push('/');
   };
 
-  const contextValue = useMemo(() => ({
-    user, login, logout, loading
-  }), [user, loading]);
-
   return (
-    <AuthContext.Provider value={contextValue}>
+    <AuthContext.Provider value={{ user, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );

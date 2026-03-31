@@ -18,8 +18,7 @@ export async function GET(req, props) {
 
     const now = new Date();
     let status = 'active';
-    if (!quiz.isActive) status = 'locked';
-    else if (quiz.activeFrom && now < new Date(quiz.activeFrom)) status = 'upcoming';
+    if (quiz.activeFrom && now < new Date(quiz.activeFrom)) status = 'upcoming';
     else if (quiz.activeUntil && now > new Date(quiz.activeUntil)) status = 'expired';
 
     let questions = await Question.find({ quizId: quiz._id });

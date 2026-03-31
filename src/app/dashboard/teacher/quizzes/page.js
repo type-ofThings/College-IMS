@@ -3,12 +3,9 @@
 import { useState, useEffect } from 'react';
 import { getQuizzes, generateQRCode, toggleQuizStatus, deleteQuiz } from '@/lib/api';
 import { useToast } from '@/components/ToastContext';
-import { useAuth } from '@/lib/auth';
 import LoadingSpinner from '@/components/LoadingSpinner';
-import Link from 'next/link';
 
 export default function QuizzesPage() {
-  const { user } = useAuth();
   const [quizzes, setQuizzes] = useState([]);
   const [selectedQuiz, setSelectedQuiz] = useState(null);
   const [qrCode, setQrCode] = useState(null);
@@ -75,7 +72,7 @@ export default function QuizzesPage() {
       {loading ? (
         <div className="flex flex-col items-center justify-center py-40 space-y-4">
            <LoadingSpinner size="lg" />
-           <p className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest animate-pulse">Establishing data streams...</p>
+           <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest animate-pulse">Establishing data streams...</p>
         </div>
       ) : quizzes.length === 0 ? (
         <div className="formal-card p-20 text-center border-dashed border-[var(--color-border)]">
@@ -100,15 +97,8 @@ export default function QuizzesPage() {
                 >
                   <div className="flex items-start justify-between gap-4 mb-5">
                     <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <h3 className="font-bold text-md text-[var(--color-text-primary)] tracking-tight leading-tight">{quiz.title}</h3>
-                        {quiz.createdBy?._id === user?.id || quiz.createdBy === user?.id ? (
-                          <span className="text-[7px] font-black bg-primary/10 text-primary border border-primary/20 px-1.5 py-0.5 rounded-sm uppercase">Mine</span>
-                        ) : (
-                          <span className="text-[7px] font-black bg-[var(--color-surface-hover)] text-[var(--color-text-muted)] border border-[var(--color-border)] px-1.5 py-0.5 rounded-sm uppercase">Dept</span>
-                        )}
-                      </div>
-                      <div className="flex flex-wrap items-center gap-2 mt-1">
+                      <h3 className="font-bold text-md text-[var(--color-text-primary)] tracking-tight leading-tight">{quiz.title}</h3>
+                      <div className="flex flex-wrap items-center gap-2 mt-2">
                         <span className="text-[8px] font-bold px-2 py-0.5 rounded-sm bg-[var(--color-surface-hover)] text-[var(--color-text-muted)] border border-[var(--color-border)] uppercase">
                           {quiz.department}
                         </span>
@@ -128,25 +118,17 @@ export default function QuizzesPage() {
 
                   <div className="flex flex-wrap items-center gap-2 pt-4 border-t border-[var(--color-border)]">
                     <button onClick={(e) => { e.stopPropagation(); handleQRCode(quiz._id); }}
-                      className="flex-1 flex items-center justify-center gap-2 text-[9px] font-bold uppercase tracking-widest px-3 py-2 rounded-lg bg-[var(--color-surface-hover)] hover:bg-primary/10 transition-all text-[var(--color-text-muted)] border border-transparent hover:border-primary/20">
-                      QR Link
+                      className="flex-1 flex items-center justify-center gap-2 text-[9px] font-bold uppercase tracking-widest px-3 py-2 rounded-lg bg-[var(--color-surface-hover)] hover:bg-[var(--color-primary)]/10 transition-all text-[var(--color-text-muted)]">
+                      View QR
                     </button>
-                    {(quiz.createdBy?._id === user?.id || quiz.createdBy === user?.id) && (
-                      <button onClick={(e) => { e.stopPropagation(); handleToggle(quiz._id); }}
-                        className="flex-1 flex items-center justify-center gap-2 text-[9px] font-bold uppercase tracking-widest px-3 py-2 rounded-lg bg-[var(--color-surface-hover)] hover:bg-primary/10 transition-all text-[var(--color-text-muted)] border border-transparent hover:border-primary/20">
-                        {quiz.isActive ? 'Pause' : 'Activate'}
-                      </button>
-                    )}
-                    <Link href={`/quiz/${quiz._id}`} onClick={(e) => e.stopPropagation()}
-                      className="flex-1 flex items-center justify-center gap-2 text-[9px] font-bold uppercase tracking-widest px-3 py-2 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-all border border-primary/20">
-                      Attempt
-                    </Link>
-                    {(quiz.createdBy?._id === user?.id || quiz.createdBy === user?.id) && (
-                      <button onClick={(e) => { e.stopPropagation(); handleDelete(quiz._id); }}
-                        className="flex-1 flex items-center justify-center gap-2 text-[9px] font-bold uppercase tracking-widest px-3 py-2 rounded-lg text-rose-500 hover:bg-rose-500/10 transition-all border border-transparent hover:border-rose-500/20">
-                        Delete
-                      </button>
-                    )}
+                    <button onClick={(e) => { e.stopPropagation(); handleToggle(quiz._id); }}
+                      className="flex-1 flex items-center justify-center gap-2 text-[9px] font-bold uppercase tracking-widest px-3 py-2 rounded-lg bg-[var(--color-surface-hover)] hover:bg-[var(--color-primary)]/10 transition-all text-[var(--color-text-muted)]">
+                      {quiz.isActive ? 'Pause' : 'Activate'}
+                    </button>
+                    <button onClick={(e) => { e.stopPropagation(); handleDelete(quiz._id); }}
+                      className="flex-1 flex items-center justify-center gap-2 text-[9px] font-bold uppercase tracking-widest px-3 py-2 rounded-lg text-rose-500 hover:bg-rose-500/10 transition-all border border-transparent hover:border-rose-500/20">
+                      Delete
+                    </button>
                   </div>
                 </div>
               ))}
