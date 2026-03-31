@@ -74,10 +74,14 @@ export default function StudentDashboard() {
         <>
       {/* Tab Navigation Header */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-[var(--color-border)] pb-4">
-        <div className="flex items-center gap-2">
-           <h1 className="text-xl font-bold text-[var(--color-text-primary)] tracking-tight">Student Portal</h1>
-           <span className="text-[var(--color-text-muted)]">/</span>
-           <span className="text-xs font-bold uppercase tracking-widest text-[var(--color-text-muted)]">{activeTab}</span>
+        <div className="flex items-center gap-3">
+           <div className="w-10 h-10 rounded-xl gradient-bg flex items-center justify-center text-white shadow-lg">
+             <span className="text-sm font-bold">{user?.department?.charAt(0)}</span>
+           </div>
+           <div>
+             <h1 className="text-xl font-bold text-[var(--color-text-primary)] tracking-tight">Student Portal</h1>
+             <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">{user?.department} Department</p>
+           </div>
         </div>
         
         <div className="flex p-1 bg-[var(--color-surface-hover)] rounded-lg border border-[var(--color-border)]">

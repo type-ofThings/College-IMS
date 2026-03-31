@@ -63,7 +63,12 @@ export async function GET(req) {
     let filter = {};
 
     if (role === 'teacher') {
-      filter = { createdBy: id };
+      filter = { 
+        $or: [
+          { createdBy: id },
+          { department: department }
+        ]
+      };
     } else {
       filter = { department };
     }
