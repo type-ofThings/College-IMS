@@ -3,6 +3,7 @@ import connectDB from '@/lib/db';
 import Attempt from '@/models/Attempt';
 import Quiz from '@/models/Quiz';
 import { verifyToken, requireRole } from '@/lib/auth-server';
+import Student from '@/models/Student';
 
 export const dynamic = 'force-dynamic';
 
@@ -32,6 +33,7 @@ export async function GET(req) {
       recentAttempts
     });
   } catch (error) {
+    console.error('Stats GET error:', error);
     return NextResponse.json({ message: 'Server error.', error: error.message }, { status: 500 });
   }
 }

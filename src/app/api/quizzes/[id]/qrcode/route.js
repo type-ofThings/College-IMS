@@ -19,14 +19,11 @@ export async function POST(req, props) {
       return NextResponse.json({ message: 'Quiz not found.' }, { status: 404 });
     }
 
-    // Try to get base url from env, fallback to request host for local testing
+    // Derive the base URL from the incoming request headers (works on both localhost and Vercel)
     const host = req.headers.get('host') || 'localhost:3000';
     const protocol = req.headers.get('x-forwarded-proto') || 'http';
-    const fallbackUrl = `${protocol}://${host}`;
-    
-    const baseUrl = process.env.BASE_URL || fallbackUrl;
-    const cleanBase = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
-    const quizUrl = `${cleanBase}/quiz/${quiz._id}`;
+    const baseUrl = `${protocol}://${host}`;
+    const quizUrl = `${baseUrl}/quiz/${quiz._id}`;
     
     const qrCodeDataUrl = await QRCode.toDataURL(quizUrl, {
       width: 300,

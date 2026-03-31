@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/lib/auth';
 import { getTeacherStats, getQuizzes, getStudents } from '@/lib/api';
+import { useToast } from '@/components/ToastContext';
 
 export default function TeacherDashboard() {
   const { user } = useAuth();
@@ -10,6 +11,7 @@ export default function TeacherDashboard() {
   const [quizzes, setQuizzes] = useState([]);
   const [studentCount, setStudentCount] = useState(0);
   const [loading, setLoading] = useState(true);
+  const { addToast } = useToast();
 
   useEffect(() => {
     loadData();
@@ -26,7 +28,8 @@ export default function TeacherDashboard() {
       setQuizzes(quizzesData);
       setStudentCount(studentsData.length);
     } catch (err) {
-      console.error(err);
+      console.error('Dashboard Load Error:', err);
+      addToast(err.message || 'Failed to load dashboard data. Please check connection.', 'error');
     } finally {
       setLoading(false);
     }

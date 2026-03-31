@@ -3,6 +3,7 @@ import connectDB from '@/lib/db';
 import Quiz from '@/models/Quiz';
 import Question from '@/models/Question';
 import { verifyToken, requireRole } from '@/lib/auth-server';
+import Teacher from '@/models/Teacher';
 
 export const dynamic = 'force-dynamic';
 
@@ -49,6 +50,7 @@ export async function POST(req) {
 
     return NextResponse.json({ message: 'Quiz created successfully.', quiz }, { status: 201 });
   } catch (error) {
+    console.error('Quiz POST error:', error);
     return NextResponse.json({ message: 'Server error.', error: error.message }, { status: 500 });
   }
 }
@@ -86,6 +88,7 @@ export async function GET(req) {
 
     return NextResponse.json(processedQuizzes);
   } catch (error) {
+    console.error('Quiz GET error:', error);
     return NextResponse.json({ message: 'Server error.', error: error.message }, { status: 500 });
   }
 }

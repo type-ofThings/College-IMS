@@ -30,6 +30,7 @@ export async function GET(req) {
     const students = await Student.find({ department }).select('-password').sort({ name: 1 });
     return NextResponse.json(students);
   } catch (error) {
+    console.error('Students GET error:', error);
     return NextResponse.json({ message: 'Server error.', error: error.message }, { status: 500 });
   }
 }
@@ -68,6 +69,7 @@ export async function POST(req) {
 
     return NextResponse.json({ message: 'Student added successfully.', student: { id: student._id, enrollmentNo: student.enrollmentNo, name: student.name, branch: student.branch, department: student.department } }, { status: 201 });
   } catch (error) {
+    console.error('Student POST error:', error);
     return NextResponse.json({ message: 'Server error.', error: error.message }, { status: 500 });
   }
 }

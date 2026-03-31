@@ -11,10 +11,7 @@ async function request(endpoint, options = {}) {
     delete headers['Content-Type'];
   }
 
-  const isServer = typeof window === 'undefined';
-  const baseUrl = isServer ? (process.env.BASE_URL || 'http://localhost:3000') : '';
-
-  const res = await fetch(`${baseUrl}/api${endpoint}`, {
+  const res = await fetch(`/api${endpoint}`, {
     cache: 'no-store',
     ...options,
     headers,
