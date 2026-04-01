@@ -57,16 +57,29 @@ export default function StudentResultsPage() {
       const res = await fetch(`/api/export-results/${quizId}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
-      if (!res.ok) throw new Error('Export failed');
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.message || 'Export failed');
+      }
       const blob = await res.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
+      a.style.display = 'none';
       a.href = url;
-      a.download = 'quiz-results.xlsx';
+      // Get filename from header if possible, else default
+      const contentDisposition = res.headers.get('Content-Disposition');
+      let filename = 'quiz-results.xlsx';
+      if (contentDisposition && contentDisposition.includes('filename=')) {
+        filename = contentDisposition.split('filename=')[1].split(';')[0].replace(/['"]/g, '');
+      }
+      a.download = filename;
+      document.body.appendChild(a);
       a.click();
+      document.body.removeChild(a);
       window.URL.revokeObjectURL(url);
     } catch (err) {
       console.error('Export error:', err);
+      alert('Failed to export Excel: ' + err.message);
     } finally {
       setExporting(false);
     }

@@ -58,6 +58,7 @@ export const startQuizWithPassword = (id, password) => request(`/quizzes/${id}/s
 // Attempts
 export const submitAttempt = (body) => request('/attempts', { method: 'POST', body: JSON.stringify(body) });
 export const getStudentAttempts = () => request('/attempts/student');
+export const getAttemptReview = (attemptId) => request(`/attempts/student/${attemptId}`);
 export const getQuizAttempts = (quizId) => request(`/attempts/quiz/${quizId}`);
 export const getTeacherStats = () => request('/attempts/stats');
 export const getAllAttempts = () => request('/attempts/all');

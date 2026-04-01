@@ -35,7 +35,7 @@ export async function GET(req) {
     const highestScore = Math.max(...percentages);
     const lowestScore = Math.min(...percentages);
 
-    const recentAttempts = [...attempts].reverse().slice(0, 5);
+    const recentAttempts = [...attempts].reverse();
     const chartData = attempts.map(a => ({
       name: a.quizId?.title || 'Quiz',
       score: Math.round((a.score / a.totalQuestions) * 100),

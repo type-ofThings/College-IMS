@@ -359,6 +359,7 @@ export default function StudentDashboard() {
                           <th className="px-6 py-4">Title</th>
                           <th className="px-6 py-4 text-center">Outcome</th>
                           <th className="px-6 py-4 text-right">Applied</th>
+                          <th className="px-6 py-4 text-center">Action</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-[var(--color-border)]/50">
@@ -373,6 +374,11 @@ export default function StudentDashboard() {
                               </span>
                             </td>
                             <td className="px-6 py-4 text-right text-[10px] font-bold text-[var(--color-text-muted)] tabular-nums uppercase">{new Date(attempt.submittedAt).toLocaleDateString(undefined, {year:'numeric', month:'short', day:'numeric'})}</td>
+                            <td className="px-6 py-4 text-center">
+                               <Link href={`/dashboard/student/review/${attempt._id}`} className="text-[10px] font-bold text-primary hover:text-primary-light uppercase tracking-widest transition-colors py-1 px-3 border border-primary/20 rounded hover:bg-primary/10">
+                                 Review
+                               </Link>
+                            </td>
                           </tr>
                         ))}
                       </tbody>
@@ -387,10 +393,13 @@ export default function StudentDashboard() {
                         <p className="text-xs font-bold text-[var(--color-text-primary)]">{attempt.quizId?.title || 'Assessment'}</p>
                         <p className="text-[9px] text-[var(--color-text-muted)] mt-1 font-bold uppercase tracking-tighter italic">{new Date(attempt.submittedAt).toLocaleDateString()} • {new Date(attempt.submittedAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
                       </div>
-                      <div className="text-right">
+                      <div className="text-right flex flex-col items-end gap-2">
                         <p className={`text-md font-bold tabular-nums ${(attempt.score/attempt.totalQuestions) >= 0.5 ? 'text-emerald-500' : 'text-rose-500'}`}>
                           {Math.round((attempt.score/attempt.totalQuestions)*100)}%
                         </p>
+                        <Link href={`/dashboard/student/review/${attempt._id}`} className="text-[9px] font-bold text-primary uppercase tracking-widest hover:underline">
+                          Review →
+                        </Link>
                       </div>
                     </div>
                   ))}
