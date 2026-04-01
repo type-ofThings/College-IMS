@@ -324,7 +324,7 @@ export default function StudentDashboard() {
                       ) : (
                         <button disabled
                           className="w-full text-center py-3 rounded-lg bg-[var(--color-surface-hover)] border border-[var(--color-border)] text-[var(--color-text-muted)] text-[10px] font-bold uppercase tracking-widest opacity-60">
-                          {quiz.status === 'upcoming' ? `Starts: ${new Date(quiz.activeFrom).toLocaleDateString()}` : 'Closed'}
+                          {quiz.status === 'upcoming' ? `Starts: ${new Date(quiz.activeFrom).toLocaleString([], {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'})}` : 'Closed'}
                         </button>
                       )}
                     </div>

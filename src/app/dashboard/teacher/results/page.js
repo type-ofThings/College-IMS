@@ -14,6 +14,8 @@ export default function StudentResultsPage() {
   const [leaderboard, setLeaderboard] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [exportQuizId, setExportQuizId] = useState('');
+  const [exporting, setExporting] = useState(false);
 
   useEffect(() => {
     loadData();
@@ -43,6 +45,32 @@ export default function StudentResultsPage() {
     const quizTitle = a.quizId?.title?.toLowerCase() || '';
     return studentName.includes(term) || enrollment.includes(term) || quizTitle.includes(term);
   });
+
+  // Get unique quizzes from attempts for the export dropdown
+  const uniqueQuizzes = [...new Map(attempts.map(a => [a.quizId?._id, { _id: a.quizId?._id, title: a.quizId?.title }]).filter(([k]) => k)).values()];
+
+  const handleExport = async (quizId) => {
+    if (!quizId) return;
+    setExporting(true);
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch(`/api/export-results/${quizId}`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (!res.ok) throw new Error('Export failed');
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'quiz-results.xlsx';
+      a.click();
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('Export error:', err);
+    } finally {
+      setExporting(false);
+    }
+  };
 
   const COLORS = ['#10b981', '#f43f5e', '#3b82f6', '#f59e0b'];
 
@@ -131,8 +159,27 @@ export default function StudentResultsPage() {
           </div>
 
           <div className="formal-card overflow-hidden transition-all duration-500 shadow-sm bg-[var(--color-surface-hover)]/20">
-            <div className="px-6 py-4 border-b border-[var(--color-border)] bg-[var(--color-surface-hover)]/40">
+            <div className="px-6 py-4 border-b border-[var(--color-border)] bg-[var(--color-surface-hover)]/40 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
               <h3 className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-[0.2em]">Detailed Record Ledger</h3>
+              <div className="flex items-center gap-2">
+                <select
+                  value={exportQuizId}
+                  onChange={(e) => setExportQuizId(e.target.value)}
+                  className="px-3 py-1.5 rounded-lg bg-[var(--color-surface-hover)] border border-[var(--color-border)] text-[10px] font-bold text-[var(--color-text-primary)] focus:outline-none focus:border-primary transition-all"
+                >
+                  <option value="">Select Quiz to Export</option>
+                  {uniqueQuizzes.map(q => (
+                    <option key={q._id} value={q._id}>{q.title}</option>
+                  ))}
+                </select>
+                <button
+                  onClick={() => handleExport(exportQuizId)}
+                  disabled={!exportQuizId || exporting}
+                  className="px-4 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] font-bold uppercase tracking-widest transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2 shadow-sm"
+                >
+                  {exporting ? '⏳' : '📥'} Export Excel
+                </button>
+              </div>
             </div>
             
             {/* Desktop View */}

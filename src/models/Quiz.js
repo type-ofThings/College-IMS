@@ -4,8 +4,8 @@ const quizSchema = new mongoose.Schema({
   title: { type: String, required: true, trim: true },
   department: {
     type: String,
-    required: true,
-    enum: ['IT', 'CSE', 'ECE', 'ME', 'CE', 'EE', 'CIVIL']
+    default: null,
+    enum: [null, '', 'All', 'IT', 'CSE', 'ECE', 'ME', 'CE', 'EE', 'CIVIL']
   },
   totalQuestions: { type: Number, required: true },
   questionsToAttempt: { type: Number, required: true },

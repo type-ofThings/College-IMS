@@ -20,15 +20,15 @@ export async function POST(req) {
     const body = await req.json();
     const { title, department, questionsToAttempt, timeLimit, allowMultipleAttempts, password, questions, activeFrom, activeUntil } = body;
 
-    if (!title || !department || !questions || !questions.length) {
-      return NextResponse.json({ message: 'Title, department, and questions are required.' }, { status: 400 });
+    if (!title || !questions || !questions.length) {
+      return NextResponse.json({ message: 'Title and questions are required.' }, { status: 400 });
     }
 
     const numToAttempt = questionsToAttempt || questions.length;
 
     const quiz = await Quiz.create({
       title,
-      department,
+      department: (!department || department === 'All') ? null : department,
       totalQuestions: questions.length,
       questionsToAttempt: numToAttempt,
       timeLimit: timeLimit || 30,
@@ -67,7 +67,15 @@ export async function GET(req) {
     if (role === 'teacher') {
       filter = { createdBy: id };
     } else {
-      filter = { department, isActive: true };
+      // Students see quizzes for their department OR open quizzes (department is null)
+      filter = { 
+        isActive: true,
+        $or: [
+          { department },
+          { department: null },
+          { department: 'All' }
+        ]
+      };
     }
 
     const quizzes = await Quiz.find(filter)

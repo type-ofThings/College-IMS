@@ -13,7 +13,7 @@ export default function CreateQuizPage() {
   
   const [form, setForm] = useState({
     title: '', 
-    department: user?.department || 'IT',
+    department: 'All',
     questionsToAttempt: '', 
     timeLimit: 30, 
     allowMultipleAttempts: false,
@@ -100,7 +100,7 @@ export default function CreateQuizPage() {
     }
   };
 
-  const departments = ['IT', 'CSE', 'ECE', 'ME', 'CE', 'EE', 'CIVIL'];
+  const departments = ['All', 'IT', 'CSE', 'ECE', 'ME', 'CE', 'EE', 'CIVIL'];
 
   return (
     <div className="max-w-4xl mx-auto space-y-6 animate-fade-in pb-10">
@@ -132,7 +132,7 @@ export default function CreateQuizPage() {
               <select value={form.department}
                 onChange={(e) => setForm({ ...form, department: e.target.value })}
                 className="w-full px-4 py-2 rounded-xl bg-[var(--color-surface-hover)] border border-[var(--color-border)] text-sm font-medium focus:outline-none focus:border-primary transition-all text-[var(--color-text-primary)]">
-                {departments.map(d => <option key={d} value={d}>{d}</option>)}
+                {departments.map(d => <option key={d} value={d}>{d === 'All' ? '🌐 All Departments (Open)' : d}</option>)}
               </select>
             </div>
             <div>
