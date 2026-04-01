@@ -311,13 +311,13 @@ export default function QuizAttemptPage({ params }) {
       </div>
 
       {/* Modern Compact Navigation */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 p-4 safe-bottom backdrop-blur-xl bg-[var(--color-surface)]/80 border-t border-[var(--color-border)]/50">
-        <div className="max-w-3xl mx-auto flex items-center justify-between gap-4">
+      <div className="fixed bottom-0 left-0 right-0 z-50 px-4 pt-4 pb-6 safe-bottom backdrop-blur-xl bg-[var(--color-surface)]/90 border-t border-[var(--color-border)]">
+        <div className="max-w-3xl mx-auto flex items-center justify-between gap-3">
           <button 
             onClick={() => setCurrentQ(Math.max(0, currentQ - 1))} 
             disabled={currentQ === 0}
-            className="flex-1 sm:flex-none h-12 px-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-hover)] text-[10px] font-bold uppercase tracking-widest text-[var(--color-text-muted)] disabled:opacity-20 active:scale-[0.98] transition-all">
-            Previous
+            className="flex-1 h-12 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-hover)] text-[10px] font-bold uppercase tracking-widest text-[var(--color-text-muted)] disabled:opacity-20 active:scale-[0.98] transition-all">
+            ← Prev
           </button>
 
           <div className="hidden sm:flex items-center gap-1.5 opacity-50">
@@ -330,14 +330,14 @@ export default function QuizAttemptPage({ params }) {
 
           {currentQ === questions.length - 1 ? (
             <button onClick={handleSubmit} disabled={submitting}
-              className="flex-1 sm:flex-none h-12 px-10 rounded-xl gradient-bg text-white text-[10px] font-bold uppercase tracking-widest shadow-lg shadow-indigo-500/10 active:scale-95 transition-all">
-              {submitting ? 'Processing...' : 'Submit Entry'}
+              className="flex-1 h-12 rounded-xl gradient-bg text-white text-[10px] font-bold uppercase tracking-widest shadow-lg shadow-indigo-500/10 active:scale-95 transition-all">
+              {submitting ? 'Processing...' : '✓ Submit'}
             </button>
           ) : (
             <button 
               onClick={() => setCurrentQ(Math.min(questions.length - 1, currentQ + 1))}
-              className="flex-1 sm:flex-none h-12 px-10 rounded-xl gradient-bg text-white text-[10px] font-bold uppercase tracking-widest shadow-lg shadow-indigo-500/10 active:scale-95 transition-all">
-              Continue
+              className="flex-1 h-12 rounded-xl gradient-bg text-white text-[10px] font-bold uppercase tracking-widest shadow-lg shadow-indigo-500/10 active:scale-95 transition-all">
+              Next →
             </button>
           )}
         </div>
