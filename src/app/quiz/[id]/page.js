@@ -51,7 +51,7 @@ export default function QuizAttemptPage({ params }) {
       }
 
       const data = await getQuizById(quizId);
-      setQuiz(data.quiz);
+      setQuiz({ ...data.quiz, status: data.status });
       
       if (data.requiresPassword) {
         setRequiresPassword(true);

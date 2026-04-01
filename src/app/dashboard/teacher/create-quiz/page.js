@@ -82,11 +82,15 @@ export default function CreateQuizPage() {
     }
 
     try {
-      await createQuiz({
+      const payload = {
         ...form,
         questionsToAttempt: parseInt(form.questionsToAttempt) || validQuestions.length,
-        questions: validQuestions
-      });
+        questions: validQuestions,
+        // Convert local datetime strings to proper ISO (respects browser timezone)
+        activeFrom: form.activeFrom ? new Date(form.activeFrom).toISOString() : '',
+        activeUntil: form.activeUntil ? new Date(form.activeUntil).toISOString() : '',
+      };
+      await createQuiz(payload);
       setMessage({ type: 'success', text: 'Assessment created successfully.' });
       setTimeout(() => router.push('/dashboard/teacher'), 1500);
     } catch (err) {

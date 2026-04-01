@@ -77,8 +77,8 @@ export async function GET(req) {
     const now = new Date();
     const processedQuizzes = quizzes.map(quiz => {
       let status = 'active';
-      if (quiz.activeFrom && now < new Date(quiz.activeFrom)) status = 'upcoming';
-      else if (quiz.activeUntil && now > new Date(quiz.activeUntil)) status = 'expired';
+      if (quiz.activeFrom && now < quiz.activeFrom) status = 'upcoming';
+      else if (quiz.activeUntil && now > quiz.activeUntil) status = 'expired';
       
       return { 
         ...quiz.toObject(), 

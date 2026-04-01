@@ -18,8 +18,18 @@ export async function GET(req, props) {
 
     const now = new Date();
     let status = 'active';
-    if (quiz.activeFrom && now < new Date(quiz.activeFrom)) status = 'upcoming';
-    else if (quiz.activeUntil && now > new Date(quiz.activeUntil)) status = 'expired';
+    
+    // Debug logging — check Vercel Function logs to verify
+    console.log('[Quiz Timing Debug]', {
+      quizId: params.id,
+      now: now.toISOString(),
+      activeFrom: quiz.activeFrom,
+      activeUntil: quiz.activeUntil,
+      isActive: quiz.isActive,
+    });
+    
+    if (quiz.activeFrom && now < quiz.activeFrom) status = 'upcoming';
+    else if (quiz.activeUntil && now > quiz.activeUntil) status = 'expired';
 
     let questions = await Question.find({ quizId: quiz._id });
     const totalQuestions = questions.length;
