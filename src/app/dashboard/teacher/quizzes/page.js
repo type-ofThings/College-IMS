@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { getQuizzes, generateQRCode, toggleQuizStatus, deleteQuiz } from '@/lib/api';
+import { getQuizzes, generateQRCode, toggleQuizStatus, deleteQuiz, reopenQuiz } from '@/lib/api';
 import { useToast } from '@/components/ToastContext';
 import LoadingSpinner from '@/components/LoadingSpinner';
 
@@ -10,6 +10,8 @@ export default function QuizzesPage() {
   const [selectedQuiz, setSelectedQuiz] = useState(null);
   const [qrCode, setQrCode] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [reopenConfig, setReopenConfig] = useState(null);
+  const [reopenForm, setReopenForm] = useState({ activeFrom: '', activeUntil: '' });
   const { addToast } = useToast();
 
   useEffect(() => { loadQuizzes(); }, []);
@@ -39,6 +41,20 @@ export default function QuizzesPage() {
     try {
       await toggleQuizStatus(quizId);
       addToast('Quiz status updated!');
+      loadQuizzes();
+    } catch (err) {
+      addToast(err.message, 'error');
+    }
+  };
+
+  const handleReopenSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const activeFrom = new Date(reopenForm.activeFrom).toISOString();
+      const activeUntil = reopenForm.activeUntil ? new Date(reopenForm.activeUntil).toISOString() : null;
+      await reopenQuiz(reopenConfig.id, { activeFrom, activeUntil });
+      addToast('Quiz reopened successfully!');
+      setReopenConfig(null);
       loadQuizzes();
     } catch (err) {
       addToast(err.message, 'error');
@@ -100,19 +116,26 @@ export default function QuizzesPage() {
                       <h3 className="font-bold text-md text-[var(--color-text-primary)] tracking-tight leading-tight">{quiz.title}</h3>
                       <div className="flex flex-wrap items-center gap-2 mt-2">
                         <span className="text-[8px] font-bold px-2 py-0.5 rounded-sm bg-[var(--color-surface-hover)] text-[var(--color-text-muted)] border border-[var(--color-border)] uppercase">
-                          {quiz.department}
+                          {quiz.department || 'All (Open)'}
                         </span>
                         <span className="text-[8px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest">
                           {quiz.totalQuestions} Questions • {quiz.timeLimit}m
                         </span>
                       </div>
+                      <div className="mt-2 text-[10px] sm:text-xs font-mono text-[var(--color-text-muted)] tracking-tight">
+                        <span className="text-emerald-500/80">Start:</span> {new Date(quiz.activeFrom).toLocaleString([], {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'})}
+                        <br />
+                        <span className="text-rose-500/80">End:</span> {quiz.activeUntil ? new Date(quiz.activeUntil).toLocaleString([], {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'}) : 'No Expiry'}
+                      </div>
                     </div>
                     <span className={`text-[8px] font-black px-2 py-0.5 rounded-sm uppercase tracking-[0.2em] ${
-                      quiz.isActive 
-                        ? 'bg-emerald-500 text-white' 
-                        : 'bg-[var(--color-surface-hover)] text-[var(--color-text-muted)]'
+                      quiz.status === 'expired' 
+                        ? 'bg-rose-500 text-white' 
+                        : quiz.isActive 
+                          ? 'bg-emerald-500 text-white' 
+                          : 'bg-[var(--color-surface-hover)] text-[var(--color-text-muted)]'
                     }`}>
-                      {quiz.isActive ? 'Live' : 'Hidden'}
+                      {quiz.status === 'expired' ? 'Closed' : (quiz.isActive ? 'Live' : 'Hidden')}
                     </span>
                   </div>
 
@@ -121,15 +144,53 @@ export default function QuizzesPage() {
                       className="flex-1 flex items-center justify-center gap-2 text-[9px] font-bold uppercase tracking-widest px-3 py-2 rounded-lg bg-[var(--color-surface-hover)] hover:bg-[var(--color-primary)]/10 transition-all text-[var(--color-text-muted)]">
                       View QR
                     </button>
-                    <button onClick={(e) => { e.stopPropagation(); handleToggle(quiz._id); }}
-                      className="flex-1 flex items-center justify-center gap-2 text-[9px] font-bold uppercase tracking-widest px-3 py-2 rounded-lg bg-[var(--color-surface-hover)] hover:bg-[var(--color-primary)]/10 transition-all text-[var(--color-text-muted)]">
-                      {quiz.isActive ? 'Pause' : 'Activate'}
-                    </button>
+                    {quiz.status === 'expired' ? (
+                      <button onClick={(e) => { 
+                          e.stopPropagation(); 
+                          setReopenConfig({ id: quiz._id }); 
+                          setReopenForm({ activeFrom: '', activeUntil: '' }); 
+                        }}
+                        className="flex-1 flex items-center justify-center gap-2 text-[9px] font-bold uppercase tracking-widest px-3 py-2 rounded-lg bg-[var(--color-primary)]/10 hover:bg-[var(--color-primary)]/20 transition-all text-primary">
+                        Reopen Quiz
+                      </button>
+                    ) : (
+                      <button onClick={(e) => { e.stopPropagation(); handleToggle(quiz._id); }}
+                        className="flex-1 flex items-center justify-center gap-2 text-[9px] font-bold uppercase tracking-widest px-3 py-2 rounded-lg bg-[var(--color-surface-hover)] hover:bg-[var(--color-primary)]/10 transition-all text-[var(--color-text-muted)]">
+                        {quiz.isActive ? 'Pause' : 'Activate'}
+                      </button>
+                    )}
                     <button onClick={(e) => { e.stopPropagation(); handleDelete(quiz._id); }}
                       className="flex-1 flex items-center justify-center gap-2 text-[9px] font-bold uppercase tracking-widest px-3 py-2 rounded-lg text-rose-500 hover:bg-rose-500/10 transition-all border border-transparent hover:border-rose-500/20">
                       Delete
                     </button>
                   </div>
+
+                  {/* Reopen Inline Form */}
+                  {reopenConfig?.id === quiz._id && (
+                    <form onSubmit={handleReopenSubmit} onClick={e => e.stopPropagation()} className="mt-4 p-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] space-y-4 shadow-sm animate-fade-in relative">
+                      <h4 className="text-xs font-bold text-[var(--color-text-primary)]">Reconfigure Window</h4>
+                      <div className="grid sm:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest mb-1.5">New Start</label>
+                          <input type="datetime-local" required
+                            value={reopenForm.activeFrom}
+                            onChange={(e) => setReopenForm({...reopenForm, activeFrom: e.target.value})}
+                            className="w-full px-3 py-2 rounded bg-[var(--color-surface-hover)] border border-[var(--color-border)] text-xs text-[var(--color-text-primary)] focus:outline-none focus:border-primary" />
+                        </div>
+                        <div>
+                          <label className="block text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest mb-1.5">New End</label>
+                          <input type="datetime-local" required
+                            value={reopenForm.activeUntil}
+                            onChange={(e) => setReopenForm({...reopenForm, activeUntil: e.target.value})}
+                            className="w-full px-3 py-2 rounded bg-[var(--color-surface-hover)] border border-[var(--color-border)] text-xs text-[var(--color-text-primary)] focus:outline-none focus:border-primary" />
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-end gap-3 pt-2">
+                        <button type="button" onClick={() => setReopenConfig(null)} className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-text-muted)] hover:text-rose-500">Cancel</button>
+                        <button type="submit" className="px-5 py-2 text-[10px] font-bold uppercase tracking-widest text-white bg-primary hover:bg-primary-light rounded shadow-md transition-colors">Confirm Reopen</button>
+                      </div>
+                    </form>
+                  )}
                 </div>
               ))}
             </div>

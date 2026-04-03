@@ -53,6 +53,7 @@ export const generateQRCode = (id) => request(`/quizzes/${id}/qrcode`, { method:
 export const uploadFileQuiz = (formData) => request('/quizzes/upload-file', { method: 'POST', body: formData });
 export const toggleQuizStatus = (id) => request(`/quizzes/${id}/toggle`, { method: 'PATCH' });
 export const deleteQuiz = (id) => request(`/quizzes/${id}`, { method: 'DELETE' });
+export const reopenQuiz = (id, body) => request(`/quizzes/${id}/reopen`, { method: 'POST', body: JSON.stringify(body) });
 export const startQuizWithPassword = (id, password) => request(`/quizzes/${id}/start`, { method: 'POST', body: JSON.stringify({ password }) });
 
 // Attempts

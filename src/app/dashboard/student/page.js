@@ -304,15 +304,24 @@ export default function StudentDashboard() {
                            </span>
                            {quiz.status !== 'active' && (
                              <span className="text-[8px] font-black uppercase text-rose-500 tracking-tighter border border-rose-500/20 px-2 py-0.5 rounded-sm">
-                               {quiz.status}
+                               {quiz.status === 'expired' ? 'Closed' : quiz.status}
                              </span>
                            )}
                         </div>
                         <h3 className="font-bold text-md text-[var(--color-text-primary)] group-hover:text-primary-light transition-colors">{quiz.title}</h3>
-                        <div className="mt-3 flex items-center gap-3 text-[9px] font-bold text-slate-500 uppercase tracking-widest">
-                          <span className="flex items-center gap-1.5">⏱ {quiz.timeLimit}m</span>
-                          <span className="opacity-20">•</span>
-                          <span className="flex items-center gap-1.5">❓ {quiz.questionsToAttempt || '--'} Qs</span>
+                        <div className="mt-3 flex flex-wrap items-center gap-3 text-[9px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest">
+                          <span className="flex items-center gap-1.5 border border-[var(--color-border)] px-1.5 py-0.5 rounded bg-[var(--color-surface-hover)]">⏱ {quiz.timeLimit}m</span>
+                          <span className="flex items-center gap-1.5 border border-[var(--color-border)] px-1.5 py-0.5 rounded bg-[var(--color-surface-hover)]">❓ {quiz.questionsToAttempt || quiz.totalQuestions} Qs</span>
+                        </div>
+                        <div className="mt-3 pt-3 border-t border-[var(--color-border)]/50 text-[9px] font-bold text-[var(--color-text-muted)] uppercase tracking-wider space-y-1">
+                          <div className="flex justify-between items-center bg-[var(--color-surface-hover)] px-2 py-1.5 rounded">
+                             <span className="text-emerald-500">Opens</span>
+                             <span className="font-mono tabular-nums tracking-tighter">{new Date(quiz.activeFrom).toLocaleString([], {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'})}</span>
+                          </div>
+                          <div className="flex justify-between items-center bg-[var(--color-surface-hover)] px-2 py-1.5 rounded">
+                             <span className="text-rose-500">Closes</span>
+                             <span className="font-mono tabular-nums tracking-tighter">{quiz.activeUntil ? new Date(quiz.activeUntil).toLocaleString([], {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'}) : 'NEVER'}</span>
+                          </div>
                         </div>
                       </div>
                       
@@ -324,7 +333,7 @@ export default function StudentDashboard() {
                       ) : (
                         <button disabled
                           className="w-full text-center py-3 rounded-lg bg-[var(--color-surface-hover)] border border-[var(--color-border)] text-[var(--color-text-muted)] text-[10px] font-bold uppercase tracking-widest opacity-60">
-                          {quiz.status === 'upcoming' ? `Starts: ${new Date(quiz.activeFrom).toLocaleString([], {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'})}` : 'Closed'}
+                          {quiz.status === 'upcoming' ? 'Not Yet Open' : 'Closed'}
                         </button>
                       )}
                     </div>
