@@ -27,7 +27,7 @@ export async function GET(req, props) {
       .populate('studentId', 'name enrollmentNo department branch')
       .sort({ submittedAt: -1 });
 
-    const data = attempts.map((a, i) => ({
+    let data = attempts.map((a, i) => ({
       'S.No': i + 1,
       'Name': a.studentId?.name || 'Unknown',
       'Enrollment No': a.studentId?.enrollmentNo || '-',
@@ -37,6 +37,10 @@ export async function GET(req, props) {
       'Total Questions': a.totalQuestions,
       'Submitted At': a.submittedAt ? new Date(a.submittedAt).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) : '-',
     }));
+
+    if (data.length === 0) {
+      data = [{ 'S.No': '-', 'Name': 'No Attempts', 'Enrollment No': '-', 'Department': '-', 'Branch': '-', 'Score': '-', 'Total Questions': '-', 'Submitted At': '-' }];
+    }
 
     const worksheet = XLSX.utils.json_to_sheet(data);
 
@@ -61,6 +65,6 @@ export async function GET(req, props) {
     });
   } catch (error) {
     console.error('Export error:', error);
-    return NextResponse.json({ message: 'Server error.', error: error.message }, { status: 500 });
+    return NextResponse.json({ message: error.message || 'Server error', error: error.toString() }, { status: 500 });
   }
 }
