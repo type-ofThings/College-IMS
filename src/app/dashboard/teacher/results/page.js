@@ -12,6 +12,8 @@ export default function StudentResultsPage() {
   const [attempts, setAttempts] = useState([]);
   const [performance, setPerformance] = useState([]);
   const [leaderboard, setLeaderboard] = useState([]);
+  const [subjects, setSubjects] = useState([]);
+  const [selectedSubject, setSelectedSubject] = useState('');
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [exportQuizId, setExportQuizId] = useState('');
@@ -21,16 +23,25 @@ export default function StudentResultsPage() {
     loadData();
   }, []);
 
+  const fetchLeaderboard = async (subject) => {
+    try {
+      const data = await getLeaderboard(subject || '');
+      setLeaderboard(data.leaderboard || []);
+      setSubjects(data.subjects || []);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const loadData = async () => {
     try {
-      const [attemptsData, perfData, leadData] = await Promise.all([
+      const [attemptsData, perfData] = await Promise.all([
         getAllAttempts(),
         getTeacherPerformance(),
-        getLeaderboard()
       ]);
       setAttempts(attemptsData);
       setPerformance(perfData);
-      setLeaderboard(leadData);
+      await fetchLeaderboard('');
     } catch (err) {
       console.error(err);
     } finally {
@@ -141,11 +152,34 @@ export default function StudentResultsPage() {
               </div>
             </div>
 
-            {/* Global Leaderboard Widget */}
+            {/* Leaderboard Widget */}
             <div className="formal-card p-5">
-              <h3 className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-[0.2em] mb-6">Global Top Performers</h3>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-[0.2em]">
+                  {selectedSubject ? `${selectedSubject} Top Performers` : 'Global Top Performers'}
+                </h3>
+              </div>
+              <select
+                value={selectedSubject}
+                onChange={(e) => {
+                  setSelectedSubject(e.target.value);
+                  fetchLeaderboard(e.target.value);
+                }}
+                className="w-full mb-4 px-3 py-1.5 rounded-lg bg-[var(--color-surface-hover)] border border-[var(--color-border)] text-[10px] font-bold text-[var(--color-text-primary)] uppercase tracking-widest focus:outline-none focus:border-primary transition-all"
+              >
+                <option value="">All Subjects</option>
+                {subjects.map(s => (
+                  <option key={s} value={s}>{s}</option>
+                ))}
+              </select>
               <div className="space-y-4">
-                {leaderboard.slice(0, 5).map((student, i) => (
+                {leaderboard.length === 0 ? (
+                  <div className="py-8 text-center">
+                    <p className="text-2xl mb-2 grayscale opacity-20">🏆</p>
+                    <p className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest">No data yet</p>
+                  </div>
+                ) : (
+                  leaderboard.slice(0, 5).map((student, i) => (
                   <div key={student._id} className="flex items-center justify-between p-3 rounded-xl bg-[var(--color-surface-hover)]/50 border border-[var(--color-border)]/50 hover:border-primary/30 transition-all group">
                     <div className="flex items-center gap-3">
                       <div className={`w-6 h-6 rounded-lg flex items-center justify-center text-[10px] font-black shadow-inner ${
@@ -166,7 +200,8 @@ export default function StudentResultsPage() {
                       <p className="text-[8px] font-bold text-[var(--color-text-muted)] uppercase tracking-widest italic">{student.attemptsCount} Tests</p>
                     </div>
                   </div>
-                ))}
+                  ))
+                )}
               </div>
             </div>
           </div>

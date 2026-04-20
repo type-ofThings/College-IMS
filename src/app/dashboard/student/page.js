@@ -17,6 +17,8 @@ export default function StudentDashboard() {
   const [quizzes, setQuizzes] = useState([]);
   const [performance, setPerformance] = useState(null);
   const [leaderboard, setLeaderboard] = useState([]);
+  const [subjects, setSubjects] = useState([]);
+  const [selectedSubject, setSelectedSubject] = useState('');
   const [loading, setLoading] = useState(true);
   const [showFullHistory, setShowFullHistory] = useState(false);
   const searchParams = useSearchParams();
@@ -27,22 +29,31 @@ export default function StudentDashboard() {
     setActiveTab(tab);
   }, [searchParams]);
 
+  const fetchLeaderboard = useCallback(async (subject) => {
+    try {
+      const data = await getLeaderboard(subject || '');
+      setLeaderboard(data.leaderboard || []);
+      setSubjects(data.subjects || []);
+    } catch (err) {
+      console.error(err);
+    }
+  }, []);
+
   const loadData = useCallback(async () => {
     try {
-      const [quizData, perfData, leadData] = await Promise.all([
+      const [quizData, perfData] = await Promise.all([
         getQuizzes(),
         getStudentPerformance(),
-        getLeaderboard()
       ]);
       setQuizzes(quizData);
       setPerformance(perfData);
-      setLeaderboard(leadData);
+      await fetchLeaderboard('');
     } catch (err) {
       console.error(err);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [fetchLeaderboard]);
 
   useEffect(() => {
     if (!authLoading && (!user || user.role !== 'student')) {
@@ -187,11 +198,39 @@ export default function StudentDashboard() {
           {/* Leaderboard Tab Content */}
           {activeTab === 'leaderboard' && (
             <div className="animate-slide-up space-y-6">
-              <div className="border-b border-[var(--color-border)] pb-4">
-                <h2 className="text-sm font-bold uppercase tracking-widest text-[var(--color-text-primary)]">Global Standings</h2>
-                <p className="text-[10px] text-[var(--color-text-muted)] mt-1 font-medium italic">Top performing students across all departments</p>
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-[var(--color-border)] pb-4">
+                <div>
+                  <h2 className="text-sm font-bold uppercase tracking-widest text-[var(--color-text-primary)]">
+                    {selectedSubject ? `${selectedSubject} Standings` : 'Global Standings'}
+                  </h2>
+                  <p className="text-[10px] text-[var(--color-text-muted)] mt-1 font-medium italic">
+                    {selectedSubject ? `Top performers in ${selectedSubject} assessments` : 'Top performing students across all departments'}
+                  </p>
+                </div>
+                <select
+                  value={selectedSubject}
+                  onChange={(e) => {
+                    setSelectedSubject(e.target.value);
+                    fetchLeaderboard(e.target.value);
+                  }}
+                  className="px-4 py-2 rounded-lg bg-[var(--color-surface-hover)] border border-[var(--color-border)] text-[10px] font-bold text-[var(--color-text-primary)] uppercase tracking-widest focus:outline-none focus:border-primary transition-all min-w-[160px]"
+                >
+                  <option value="">All Subjects</option>
+                  {subjects.map(s => (
+                    <option key={s} value={s}>{s}</option>
+                  ))}
+                </select>
               </div>
 
+              {leaderboard.length === 0 ? (
+                <div className="formal-card p-16 text-center border-dashed">
+                  <div className="text-4xl mb-4 grayscale">🏆</div>
+                  <p className="text-xs font-bold uppercase tracking-widest text-[var(--color-text-primary)]">No Rankings Yet</p>
+                  <p className="text-[10px] text-[var(--color-text-muted)] mt-2 font-medium">
+                    {selectedSubject ? `No attempts recorded for ${selectedSubject} assessments yet.` : 'No attempts have been recorded yet.'}
+                  </p>
+                </div>
+              ) : (
               <div className="grid lg:grid-cols-3 gap-6">
                 {/* Top 3 Podiums */}
                 <div className="lg:col-span-1 space-y-4">
@@ -275,6 +314,7 @@ export default function StudentDashboard() {
                   </div>
                 </div>
               </div>
+              )}
             </div>
           )}
 
