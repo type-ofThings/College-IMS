@@ -15,7 +15,7 @@ export async function GET(req) {
 
     const { searchParams } = new URL(req.url);
     const subject = searchParams.get('subject');     // quiz title filter
-    const department = searchParams.get('department'); // student department filter
+    const branch = searchParams.get('branch');         // student branch filter
 
     // Build match stage for attempts
     let matchStage = {};
@@ -31,8 +31,8 @@ export async function GET(req) {
     const attemptedQuizzes = await Quiz.find({ _id: { $in: attemptedQuizIds } }).distinct('title');
     const subjects = attemptedQuizzes.sort();
 
-    // Get all distinct student departments (for the department dropdown)
-    const departments = await Student.distinct('department');
+    // Get all distinct student branches (for the branch dropdown)
+    const branches = await Student.distinct('branch');
 
     // Build the aggregation pipeline
     const pipeline = [];
@@ -66,9 +66,9 @@ export async function GET(req) {
     });
     pipeline.push({ $unwind: "$student" });
 
-    // Filter by department if set (after lookup so we have student data)
-    if (department && department !== 'all') {
-      pipeline.push({ $match: { "student.department": department } });
+    // Filter by branch if set (after lookup so we have student data)
+    if (branch && branch !== 'all') {
+      pipeline.push({ $match: { "student.branch": branch } });
     }
 
     // Project fields
@@ -90,7 +90,7 @@ export async function GET(req) {
 
     const leaderboard = await Attempt.aggregate(pipeline);
 
-    return NextResponse.json({ leaderboard, subjects, departments });
+    return NextResponse.json({ leaderboard, subjects, branches });
   } catch (error) {
     return NextResponse.json({ message: 'Server error.', error: error.message }, { status: 500 });
   }

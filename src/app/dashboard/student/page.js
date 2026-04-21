@@ -19,8 +19,8 @@ export default function StudentDashboard() {
   const [leaderboard, setLeaderboard] = useState([]);
   const [subjects, setSubjects] = useState([]);
   const [selectedSubject, setSelectedSubject] = useState('');
-  const [departments, setDepartments] = useState([]);
-  const [selectedDepartment, setSelectedDepartment] = useState('');
+  const [branches, setBranches] = useState([]);
+  const [selectedBranch, setSelectedBranch] = useState('');
   const [loading, setLoading] = useState(true);
   const [showFullHistory, setShowFullHistory] = useState(false);
   const searchParams = useSearchParams();
@@ -31,12 +31,12 @@ export default function StudentDashboard() {
     setActiveTab(tab);
   }, [searchParams]);
 
-  const fetchLeaderboard = useCallback(async (subject, department) => {
+  const fetchLeaderboard = useCallback(async (subject, branch) => {
     try {
-      const data = await getLeaderboard(subject || '', department || '');
+      const data = await getLeaderboard(subject || '', branch || '');
       setLeaderboard(data.leaderboard || []);
       setSubjects(data.subjects || []);
-      setDepartments(data.departments || []);
+      setBranches(data.branches || []);
     } catch (err) {
       console.error(err);
     }
@@ -204,10 +204,10 @@ export default function StudentDashboard() {
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-[var(--color-border)] pb-4">
                 <div>
                   <h2 className="text-sm font-bold uppercase tracking-widest text-[var(--color-text-primary)]">
-                    {selectedSubject || selectedDepartment ? `${selectedSubject || 'All Subjects'} - ${selectedDepartment || 'All Departments'} Standings` : 'Global Standings'}
+                    {selectedSubject || selectedBranch ? `${selectedSubject || 'All Subjects'} - ${selectedBranch || 'All Branches'} Standings` : 'Global Standings'}
                   </h2>
                   <p className="text-[10px] text-[var(--color-text-muted)] mt-1 font-medium italic">
-                    {selectedSubject || selectedDepartment ? `Top performers` : 'Top performing students across all departments'}
+                    {selectedSubject || selectedBranch ? `Top performers` : 'Top performing students across all branches'}
                   </p>
                 </div>
                 <div className="flex gap-2">
@@ -215,7 +215,7 @@ export default function StudentDashboard() {
                     value={selectedSubject}
                     onChange={(e) => {
                       setSelectedSubject(e.target.value);
-                      fetchLeaderboard(e.target.value, selectedDepartment);
+                      fetchLeaderboard(e.target.value, selectedBranch);
                     }}
                     className="px-4 py-2 rounded-lg bg-[var(--color-surface-hover)] border border-[var(--color-border)] text-[10px] font-bold text-[var(--color-text-primary)] uppercase tracking-widest focus:outline-none focus:border-primary transition-all min-w-[140px]"
                   >
@@ -225,16 +225,16 @@ export default function StudentDashboard() {
                     ))}
                   </select>
                   <select
-                    value={selectedDepartment}
+                    value={selectedBranch}
                     onChange={(e) => {
-                      setSelectedDepartment(e.target.value);
+                      setSelectedBranch(e.target.value);
                       fetchLeaderboard(selectedSubject, e.target.value);
                     }}
                     className="px-4 py-2 rounded-lg bg-[var(--color-surface-hover)] border border-[var(--color-border)] text-[10px] font-bold text-[var(--color-text-primary)] uppercase tracking-widest focus:outline-none focus:border-primary transition-all min-w-[140px]"
                   >
-                    <option value="">All Departments</option>
-                    {departments.map(d => (
-                      <option key={d} value={d}>{d}</option>
+                    <option value="">All Branches</option>
+                    {branches.map(b => (
+                      <option key={b} value={b}>{b}</option>
                     ))}
                   </select>
                 </div>

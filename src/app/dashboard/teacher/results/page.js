@@ -14,8 +14,8 @@ export default function StudentResultsPage() {
   const [leaderboard, setLeaderboard] = useState([]);
   const [subjects, setSubjects] = useState([]);
   const [selectedSubject, setSelectedSubject] = useState('');
-  const [departments, setDepartments] = useState([]);
-  const [selectedDepartment, setSelectedDepartment] = useState('');
+  const [branches, setBranches] = useState([]);
+  const [selectedBranch, setSelectedBranch] = useState('');
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [exportQuizId, setExportQuizId] = useState('');
@@ -25,12 +25,12 @@ export default function StudentResultsPage() {
     loadData();
   }, []);
 
-  const fetchLeaderboard = async (subject, department) => {
+  const fetchLeaderboard = async (subject, branch) => {
     try {
-      const data = await getLeaderboard(subject || '', department || '');
+      const data = await getLeaderboard(subject || '', branch || '');
       setLeaderboard(data.leaderboard || []);
       setSubjects(data.subjects || []);
-      setDepartments(data.departments || []);
+      setBranches(data.branches || []);
     } catch (err) {
       console.error(err);
     }
@@ -159,7 +159,7 @@ export default function StudentResultsPage() {
             <div className="formal-card p-5">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-[0.2em] leading-tight">
-                  {selectedSubject || selectedDepartment ? `${selectedSubject || 'All Subjects'} - ${selectedDepartment || 'All Departments'} Top Performers` : 'Global Top Performers'}
+                  {selectedSubject || selectedBranch ? `${selectedSubject || 'All Subjects'} - ${selectedBranch || 'All Branches'} Top Performers` : 'Global Top Performers'}
                 </h3>
               </div>
               <div className="flex flex-col gap-2 mb-4">
@@ -167,7 +167,7 @@ export default function StudentResultsPage() {
                   value={selectedSubject}
                   onChange={(e) => {
                     setSelectedSubject(e.target.value);
-                    fetchLeaderboard(e.target.value, selectedDepartment);
+                    fetchLeaderboard(e.target.value, selectedBranch);
                   }}
                   className="w-full px-3 py-1.5 rounded-lg bg-[var(--color-surface-hover)] border border-[var(--color-border)] text-[10px] font-bold text-[var(--color-text-primary)] uppercase tracking-widest focus:outline-none focus:border-primary transition-all"
                 >
@@ -177,16 +177,16 @@ export default function StudentResultsPage() {
                   ))}
                 </select>
                 <select
-                  value={selectedDepartment}
+                  value={selectedBranch}
                   onChange={(e) => {
-                    setSelectedDepartment(e.target.value);
+                    setSelectedBranch(e.target.value);
                     fetchLeaderboard(selectedSubject, e.target.value);
                   }}
                   className="w-full px-3 py-1.5 rounded-lg bg-[var(--color-surface-hover)] border border-[var(--color-border)] text-[10px] font-bold text-[var(--color-text-primary)] uppercase tracking-widest focus:outline-none focus:border-primary transition-all"
                 >
-                  <option value="">All Departments</option>
-                  {departments.map(d => (
-                    <option key={d} value={d}>{d}</option>
+                  <option value="">All Branches</option>
+                  {branches.map(b => (
+                    <option key={b} value={b}>{b}</option>
                   ))}
                 </select>
               </div>

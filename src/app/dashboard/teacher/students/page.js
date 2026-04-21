@@ -13,6 +13,7 @@ export default function StudentsPage() {
   const [submitLoading, setSubmitLoading] = useState(false);
   const [uploadSummary, setUploadSummary] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedBranch, setSelectedBranch] = useState('');
   const { addToast } = useToast();
 
   useEffect(() => { loadStudents(); }, []);
@@ -77,9 +78,14 @@ export default function StudentsPage() {
     }
   };
 
+  // Get all distinct branches for the filter dropdown
+  const allBranches = [...new Set(students.map(s => s.branch).filter(Boolean))].sort();
+
   const filteredStudents = students.filter(s => {
     const term = searchTerm.toLowerCase();
-    return s.name.toLowerCase().includes(term) || s.enrollmentNo.toLowerCase().includes(term);
+    const matchesSearch = s.name.toLowerCase().includes(term) || s.enrollmentNo.toLowerCase().includes(term);
+    const matchesBranch = !selectedBranch || s.branch === selectedBranch;
+    return matchesSearch && matchesBranch;
   });
 
   return (
@@ -104,6 +110,16 @@ export default function StudentsPage() {
               className="w-full pl-10 pr-4 py-2 rounded-xl bg-[var(--color-surface-hover)] border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-primary)] focus:outline-none focus:border-primary placeholder:text-[var(--color-text-muted)]/50 transition-all"
             />
           </div>
+          <select
+            value={selectedBranch}
+            onChange={(e) => setSelectedBranch(e.target.value)}
+            className="px-4 py-2 rounded-xl bg-[var(--color-surface-hover)] border border-[var(--color-border)] text-[10px] font-bold text-[var(--color-text-primary)] uppercase tracking-widest focus:outline-none focus:border-primary transition-all min-w-[140px]"
+          >
+            <option value="">All Branches</option>
+            {allBranches.map(b => (
+              <option key={b} value={b}>{b}</option>
+            ))}
+          </select>
           <div className="flex gap-2">
             <button onClick={() => setShowAddForm(!showAddForm)}
               className="flex-1 sm:flex-none px-4 py-2 rounded-xl gradient-bg text-white text-[10px] font-bold uppercase tracking-widest hover:brightness-110 active:scale-[0.98] transition-all shadow-md">
@@ -167,8 +183,8 @@ export default function StudentsPage() {
                 className="w-full px-4 py-2 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-primary)] focus:outline-none focus:border-primary transition-all" />
             </div>
             <div className="space-y-1">
-              <p className="text-[8px] font-bold uppercase text-[var(--color-text-muted)] tracking-widest ml-1">Specialization</p>
-              <input type="text" required placeholder="e.g., Computer Science" value={form.branch}
+              <p className="text-[8px] font-bold uppercase text-[var(--color-text-muted)] tracking-widest ml-1">Branch</p>
+              <input type="text" required placeholder="e.g., AIML, CSE, IT" value={form.branch}
                 onChange={(e) => setForm({ ...form, branch: e.target.value })}
                 className="w-full px-4 py-2 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-xs font-bold text-[var(--color-text-primary)] focus:outline-none focus:border-primary transition-all" />
             </div>
@@ -208,8 +224,7 @@ export default function StudentsPage() {
                   <tr className="bg-[var(--color-surface-hover)] shadow-inner border-b border-[var(--color-border)]">
                     <th className="px-6 py-4 text-[9px] font-bold text-[var(--color-text-muted)] uppercase tracking-[0.2em]">ID Number</th>
                     <th className="px-6 py-4 text-[9px] font-bold text-[var(--color-text-muted)] uppercase tracking-[0.2em]">Student</th>
-                    <th className="px-6 py-4 text-[9px] font-bold text-[var(--color-text-muted)] uppercase tracking-[0.2em]">Specialization</th>
-                    <th className="px-6 py-4 text-[9px] font-bold text-[var(--color-text-muted)] uppercase tracking-[0.2em]">Department</th>
+                    <th className="px-6 py-4 text-[9px] font-bold text-[var(--color-text-muted)] uppercase tracking-[0.2em]">Branch</th>
                     <th className="px-6 py-4 text-right text-[9px] font-bold text-[var(--color-text-muted)] uppercase tracking-[0.2em]">Action</th>
                   </tr>
                 </thead>
@@ -229,9 +244,6 @@ export default function StudentsPage() {
                       </td>
                       <td className="px-6 py-4">
                          <span className="text-[10px] font-bold text-slate-500 uppercase tracking-tight">{student.branch}</span>
-                      </td>
-                      <td className="px-6 py-4">
-                         <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest italic opacity-50">{student.department}</span>
                       </td>
                       <td className="px-6 py-4 text-right">
                          <button onClick={() => handleDelete(student._id)}
@@ -269,9 +281,6 @@ export default function StudentsPage() {
                   </div>
                   <div className="flex items-center justify-between border-t border-[var(--color-border)] pt-2">
                     <span className="text-[9px] font-bold uppercase tracking-widest text-[var(--color-text-muted)]">{student.branch}</span>
-                    <span className="text-[8px] font-bold uppercase text-[var(--color-text-muted)] tracking-tighter tabular-nums">
-                      DEPT: {student.department}
-                    </span>
                   </div>
                </div>
              ))}
