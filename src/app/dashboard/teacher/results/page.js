@@ -90,7 +90,7 @@ export default function StudentResultsPage() {
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-      window.URL.revokeObjectURL(url);
+      setTimeout(() => window.URL.revokeObjectURL(url), 100);
     } catch (err) {
       console.error('Export error:', err);
       alert('Failed to export Excel: ' + err.message);

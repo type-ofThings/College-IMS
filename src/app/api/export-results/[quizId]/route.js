@@ -53,8 +53,10 @@ export async function GET(req, props) {
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Results');
 
-    const buffer = XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' });
-
+    const b64 = XLSX.write(workbook, { type: 'base64', bookType: 'xlsx' });
+    const buffer = Buffer.from(b64, 'base64');
+    
+    // Ensure we send filename property safely
     const safeName = quiz.title.replace(/[^a-zA-Z0-9]/g, '_').substring(0, 50);
 
     return new Response(buffer, {
