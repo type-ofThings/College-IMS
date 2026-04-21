@@ -38,8 +38,13 @@ export async function POST(req) {
     let score = 0;
     const processedAnswers = [];
 
+    // Bulk fetch all questions in one query instead of N individual queries
+    const questionIds = answers.map(a => a.questionId);
+    const questions = await Question.find({ _id: { $in: questionIds } }).lean();
+    const questionMap = new Map(questions.map(q => [q._id.toString(), q]));
+
     for (const ans of answers) {
-      const question = await Question.findById(ans.questionId);
+      const question = questionMap.get(ans.questionId.toString());
       if (question && question.correctAnswer === ans.selectedAnswer) {
         score++;
       }
