@@ -19,6 +19,8 @@ export default function StudentDashboard() {
   const [leaderboard, setLeaderboard] = useState([]);
   const [subjects, setSubjects] = useState([]);
   const [selectedSubject, setSelectedSubject] = useState('');
+  const [departments, setDepartments] = useState([]);
+  const [selectedDepartment, setSelectedDepartment] = useState('');
   const [loading, setLoading] = useState(true);
   const [showFullHistory, setShowFullHistory] = useState(false);
   const searchParams = useSearchParams();
@@ -29,11 +31,12 @@ export default function StudentDashboard() {
     setActiveTab(tab);
   }, [searchParams]);
 
-  const fetchLeaderboard = useCallback(async (subject) => {
+  const fetchLeaderboard = useCallback(async (subject, department) => {
     try {
-      const data = await getLeaderboard(subject || '');
+      const data = await getLeaderboard(subject || '', department || '');
       setLeaderboard(data.leaderboard || []);
       setSubjects(data.subjects || []);
+      setDepartments(data.departments || []);
     } catch (err) {
       console.error(err);
     }
@@ -47,7 +50,7 @@ export default function StudentDashboard() {
       ]);
       setQuizzes(quizData);
       setPerformance(perfData);
-      await fetchLeaderboard('');
+      await fetchLeaderboard('', '');
     } catch (err) {
       console.error(err);
     } finally {
@@ -201,25 +204,40 @@ export default function StudentDashboard() {
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-[var(--color-border)] pb-4">
                 <div>
                   <h2 className="text-sm font-bold uppercase tracking-widest text-[var(--color-text-primary)]">
-                    {selectedSubject ? `${selectedSubject} Standings` : 'Global Standings'}
+                    {selectedSubject || selectedDepartment ? `${selectedSubject || 'All Subjects'} - ${selectedDepartment || 'All Departments'} Standings` : 'Global Standings'}
                   </h2>
                   <p className="text-[10px] text-[var(--color-text-muted)] mt-1 font-medium italic">
-                    {selectedSubject ? `Top performers in ${selectedSubject} assessments` : 'Top performing students across all departments'}
+                    {selectedSubject || selectedDepartment ? `Top performers` : 'Top performing students across all departments'}
                   </p>
                 </div>
-                <select
-                  value={selectedSubject}
-                  onChange={(e) => {
-                    setSelectedSubject(e.target.value);
-                    fetchLeaderboard(e.target.value);
-                  }}
-                  className="px-4 py-2 rounded-lg bg-[var(--color-surface-hover)] border border-[var(--color-border)] text-[10px] font-bold text-[var(--color-text-primary)] uppercase tracking-widest focus:outline-none focus:border-primary transition-all min-w-[160px]"
-                >
-                  <option value="">All Subjects</option>
-                  {subjects.map(s => (
-                    <option key={s} value={s}>{s}</option>
-                  ))}
-                </select>
+                <div className="flex gap-2">
+                  <select
+                    value={selectedSubject}
+                    onChange={(e) => {
+                      setSelectedSubject(e.target.value);
+                      fetchLeaderboard(e.target.value, selectedDepartment);
+                    }}
+                    className="px-4 py-2 rounded-lg bg-[var(--color-surface-hover)] border border-[var(--color-border)] text-[10px] font-bold text-[var(--color-text-primary)] uppercase tracking-widest focus:outline-none focus:border-primary transition-all min-w-[140px]"
+                  >
+                    <option value="">All Subjects</option>
+                    {subjects.map(s => (
+                      <option key={s} value={s}>{s}</option>
+                    ))}
+                  </select>
+                  <select
+                    value={selectedDepartment}
+                    onChange={(e) => {
+                      setSelectedDepartment(e.target.value);
+                      fetchLeaderboard(selectedSubject, e.target.value);
+                    }}
+                    className="px-4 py-2 rounded-lg bg-[var(--color-surface-hover)] border border-[var(--color-border)] text-[10px] font-bold text-[var(--color-text-primary)] uppercase tracking-widest focus:outline-none focus:border-primary transition-all min-w-[140px]"
+                  >
+                    <option value="">All Departments</option>
+                    {departments.map(d => (
+                      <option key={d} value={d}>{d}</option>
+                    ))}
+                  </select>
+                </div>
               </div>
 
               {leaderboard.length === 0 ? (
@@ -227,7 +245,7 @@ export default function StudentDashboard() {
                   <div className="text-4xl mb-4 grayscale">🏆</div>
                   <p className="text-xs font-bold uppercase tracking-widest text-[var(--color-text-primary)]">No Rankings Yet</p>
                   <p className="text-[10px] text-[var(--color-text-muted)] mt-2 font-medium">
-                    {selectedSubject ? `No attempts recorded for ${selectedSubject} assessments yet.` : 'No attempts have been recorded yet.'}
+                    No attempts have been recorded for the selected criteria.
                   </p>
                 </div>
               ) : (

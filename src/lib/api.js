@@ -65,5 +65,11 @@ export const getTeacherStats = () => request('/attempts/stats');
 export const getAllAttempts = () => request('/attempts/all');
 export const checkAttempt = (quizId) => request(`/attempts/check/${quizId}`);
 export const getStudentPerformance = () => request('/attempts/performance');
-export const getLeaderboard = (subject) => request(`/attempts/leaderboard${subject ? `?subject=${subject}` : ''}`);
+export const getLeaderboard = (subject, department) => {
+  const params = new URLSearchParams();
+  if (subject) params.set('subject', subject);
+  if (department) params.set('department', department);
+  const qs = params.toString();
+  return request(`/attempts/leaderboard${qs ? `?${qs}` : ''}`);
+};
 export const getTeacherPerformance = () => request('/attempts/performance-all');

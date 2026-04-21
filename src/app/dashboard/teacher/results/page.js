@@ -14,6 +14,8 @@ export default function StudentResultsPage() {
   const [leaderboard, setLeaderboard] = useState([]);
   const [subjects, setSubjects] = useState([]);
   const [selectedSubject, setSelectedSubject] = useState('');
+  const [departments, setDepartments] = useState([]);
+  const [selectedDepartment, setSelectedDepartment] = useState('');
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [exportQuizId, setExportQuizId] = useState('');
@@ -23,11 +25,12 @@ export default function StudentResultsPage() {
     loadData();
   }, []);
 
-  const fetchLeaderboard = async (subject) => {
+  const fetchLeaderboard = async (subject, department) => {
     try {
-      const data = await getLeaderboard(subject || '');
+      const data = await getLeaderboard(subject || '', department || '');
       setLeaderboard(data.leaderboard || []);
       setSubjects(data.subjects || []);
+      setDepartments(data.departments || []);
     } catch (err) {
       console.error(err);
     }
@@ -41,7 +44,7 @@ export default function StudentResultsPage() {
       ]);
       setAttempts(attemptsData);
       setPerformance(perfData);
-      await fetchLeaderboard('');
+      await fetchLeaderboard('', '');
     } catch (err) {
       console.error(err);
     } finally {
@@ -155,23 +158,38 @@ export default function StudentResultsPage() {
             {/* Leaderboard Widget */}
             <div className="formal-card p-5">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-[0.2em]">
-                  {selectedSubject ? `${selectedSubject} Top Performers` : 'Global Top Performers'}
+                <h3 className="text-[10px] font-bold text-[var(--color-text-muted)] uppercase tracking-[0.2em] leading-tight">
+                  {selectedSubject || selectedDepartment ? `${selectedSubject || 'All Subjects'} - ${selectedDepartment || 'All Departments'} Top Performers` : 'Global Top Performers'}
                 </h3>
               </div>
-              <select
-                value={selectedSubject}
-                onChange={(e) => {
-                  setSelectedSubject(e.target.value);
-                  fetchLeaderboard(e.target.value);
-                }}
-                className="w-full mb-4 px-3 py-1.5 rounded-lg bg-[var(--color-surface-hover)] border border-[var(--color-border)] text-[10px] font-bold text-[var(--color-text-primary)] uppercase tracking-widest focus:outline-none focus:border-primary transition-all"
-              >
-                <option value="">All Subjects</option>
-                {subjects.map(s => (
-                  <option key={s} value={s}>{s}</option>
-                ))}
-              </select>
+              <div className="flex flex-col gap-2 mb-4">
+                <select
+                  value={selectedSubject}
+                  onChange={(e) => {
+                    setSelectedSubject(e.target.value);
+                    fetchLeaderboard(e.target.value, selectedDepartment);
+                  }}
+                  className="w-full px-3 py-1.5 rounded-lg bg-[var(--color-surface-hover)] border border-[var(--color-border)] text-[10px] font-bold text-[var(--color-text-primary)] uppercase tracking-widest focus:outline-none focus:border-primary transition-all"
+                >
+                  <option value="">All Subjects</option>
+                  {subjects.map(s => (
+                    <option key={s} value={s}>{s}</option>
+                  ))}
+                </select>
+                <select
+                  value={selectedDepartment}
+                  onChange={(e) => {
+                    setSelectedDepartment(e.target.value);
+                    fetchLeaderboard(selectedSubject, e.target.value);
+                  }}
+                  className="w-full px-3 py-1.5 rounded-lg bg-[var(--color-surface-hover)] border border-[var(--color-border)] text-[10px] font-bold text-[var(--color-text-primary)] uppercase tracking-widest focus:outline-none focus:border-primary transition-all"
+                >
+                  <option value="">All Departments</option>
+                  {departments.map(d => (
+                    <option key={d} value={d}>{d}</option>
+                  ))}
+                </select>
+              </div>
               <div className="space-y-4">
                 {leaderboard.length === 0 ? (
                   <div className="py-8 text-center">
