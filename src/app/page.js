@@ -28,7 +28,7 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[var(--color-surface)]">
+    <div className="min-h-screen bg-surface">
       {/* Navbar */}
       <nav className="fixed top-0 left-0 right-0 z-50 glass">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -43,22 +43,22 @@ export default function LandingPage() {
             </div>
 
             <div className="hidden md:flex items-center gap-8">
-              <a href="#home" className="text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors text-sm font-medium">Home</a>
-              <a href="#features" className="text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors text-sm font-medium">Features</a>
-              <Link href="/login/teacher" className="text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors text-sm font-medium">Login</Link>
+              <a href="#home" className="text-text-secondary hover:text-text-primary transition-colors text-sm font-medium">Home</a>
+              <a href="#features" className="text-text-secondary hover:text-text-primary transition-colors text-sm font-medium">Features</a>
+              <Link href="/login/teacher" className="text-text-secondary hover:text-text-primary transition-colors text-sm font-medium">Login</Link>
             </div>
 
             <div className="flex items-center gap-4">
-              <button onClick={toggleTheme} className="p-2 rounded-full border border-[var(--color-border)] hover:bg-[var(--color-surface-hover)] transition-all shadow-sm">
+              <button onClick={toggleTheme} className="p-2 rounded-full border border-border hover:bg-surface-hover transition-all shadow-sm">
                 {theme === 'dark' ? (
                   <svg className="w-4 h-4 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
                 ) : (
-                  <svg className="w-4 h-4 text-[var(--color-text-primary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+                  <svg className="w-4 h-4 text-text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
                 )}
               </button>
             </div>
 
-            <button className="md:hidden text-[var(--color-text-secondary)]" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+            <button className="md:hidden text-text-secondary" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
               <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 {mobileMenuOpen ? (
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -71,11 +71,11 @@ export default function LandingPage() {
         </div>
 
         {mobileMenuOpen && (
-          <div className="md:hidden glass border-t border-[var(--color-border)]">
+          <div className="md:hidden glass border-t border-border">
             <div className="px-4 py-3 space-y-2">
-              <a href="#home" className="block text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] py-2 text-sm">Home</a>
-              <a href="#features" className="block text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] py-2 text-sm">Features</a>
-              <Link href="/login/teacher" className="block text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] py-2 text-sm">Login</Link>
+              <a href="#home" className="block text-text-secondary hover:text-text-primary py-2 text-sm">Home</a>
+              <a href="#features" className="block text-text-secondary hover:text-text-primary py-2 text-sm">Features</a>
+              <Link href="/login/teacher" className="block text-text-secondary hover:text-text-primary py-2 text-sm">Login</Link>
             </div>
           </div>
         )}
@@ -84,12 +84,12 @@ export default function LandingPage() {
       {/* Hero Section */}
       <section id="home" className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
         {/* Background decorations */}
-        <div className="absolute top-20 left-10 w-72 h-72 bg-[var(--color-primary)] rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-pulse-slow" />
-        <div className="absolute top-40 right-10 w-72 h-72 bg-[var(--color-secondary)] rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-pulse-slow" style={{ animationDelay: '1s' }} />
+        <div className="absolute top-20 left-10 w-72 h-72 bg-primary rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-pulse-slow" />
+        <div className="absolute top-40 right-10 w-72 h-72 bg-secondary rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-pulse-slow" style={{ animationDelay: '1s' }} />
 
         <div className="max-w-5xl mx-auto text-center relative z-10">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass text-xs font-medium text-[var(--color-primary-light)] mb-8 animate-fade-in">
-            <span className="w-2 h-2 rounded-full bg-[var(--color-success)] animate-pulse" />
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass text-xs font-medium text-primary-light mb-8 animate-fade-in">
+            <span className="w-2 h-2 rounded-full bg-success animate-pulse" />
             Trusted by 50+ Colleges
           </div>
 
@@ -98,15 +98,15 @@ export default function LandingPage() {
             <span className="gradient-text">for Modern Colleges</span>
           </h1>
 
-          <p className="text-lg sm:text-xl text-[var(--color-text-secondary)] max-w-2xl mx-auto mb-10 leading-relaxed animate-slide-up" style={{ animationDelay: '0.1s' }}>
+          <p className="text-lg sm:text-xl text-text-secondary max-w-2xl mx-auto mb-10 leading-relaxed animate-slide-up" style={{ animationDelay: '0.1s' }}>
             Create, share, and analyze quizzes effortlessly. QR-based access, real-time analytics, and department-wise management — all in one platform.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-slide-up" style={{ animationDelay: '0.2s' }}>
-            <Link href="/login/teacher" className="w-full sm:w-auto px-8 py-3.5 rounded-xl gradient-bg text-white font-semibold text-sm hover:opacity-90 transition-all shadow-lg shadow-[var(--color-primary)]/25 hover:shadow-xl hover:shadow-[var(--color-primary)]/30 hover:-translate-y-0.5">
+            <Link href="/login/teacher" className="w-full sm:w-auto px-8 py-3.5 rounded-xl gradient-bg text-white font-semibold text-sm hover:opacity-90 transition-all shadow-lg shadow-(--color-primary)/25 hover:shadow-xl hover:shadow-(--color-primary)/30 hover:-translate-y-0.5">
               Login as Teacher
             </Link>
-            <Link href="/login/student" className="w-full sm:w-auto px-8 py-3.5 rounded-xl glass text-[var(--color-text-primary)] font-semibold text-sm hover:bg-[var(--color-surface-hover)] transition-all hover:-translate-y-0.5">
+            <Link href="/login/student" className="w-full sm:w-auto px-8 py-3.5 rounded-xl glass text-text-primary font-semibold text-sm hover:bg-surface-hover transition-all hover:-translate-y-0.5">
               Login as Student
             </Link>
           </div>
@@ -121,10 +121,10 @@ export default function LandingPage() {
                 { label: 'Students', value: '3,420', icon: '👨‍🎓', color: 'var(--color-secondary)' },
                 { label: 'Submissions', value: '12,580', icon: '✅', color: 'var(--color-success)' },
               ].map((stat, i) => (
-                <div key={i} className="text-center p-4 rounded-xl bg-[var(--color-surface)]/50">
+                <div key={i} className="text-center p-4 rounded-xl bg-surface/50">
                   <div className="text-2xl mb-2">{stat.icon}</div>
                   <div className="text-2xl sm:text-3xl font-bold" style={{ color: stat.color }}>{stat.value}</div>
-                  <div className="text-xs sm:text-sm text-[var(--color-text-muted)] mt-1">{stat.label}</div>
+                  <div className="text-xs sm:text-sm text-text-muted mt-1">{stat.label}</div>
                 </div>
               ))}
             </div>
@@ -140,7 +140,7 @@ export default function LandingPage() {
               Everything you need to{' '}
               <span className="gradient-text">manage quizzes</span>
             </h2>
-            <p className="text-[var(--color-text-secondary)] max-w-xl mx-auto">
+            <p className="text-text-secondary max-w-xl mx-auto">
               Powerful tools designed for educators. Seamless experience for students.
             </p>
           </div>
@@ -175,12 +175,12 @@ export default function LandingPage() {
                 desc: 'Track performance with detailed analytics. View scores, completion rates, and question-level insights.',
               },
             ].map((feature, i) => (
-              <div key={i} className="glass rounded-2xl p-6 hover:bg-[var(--color-surface-hover)]/50 transition-all duration-300 group hover:-translate-y-1">
+              <div key={i} className="glass rounded-2xl p-6 hover:bg-surface-hover/50 transition-all duration-300 group hover:-translate-y-1">
                 <div className="w-12 h-12 rounded-xl gradient-bg flex items-center justify-center text-white mb-5 group-hover:scale-110 transition-transform">
                   {feature.icon}
                 </div>
                 <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
-                <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">{feature.desc}</p>
+                <p className="text-sm text-text-secondary leading-relaxed">{feature.desc}</p>
               </div>
             ))}
           </div>
@@ -188,7 +188,7 @@ export default function LandingPage() {
       </section>
 
       {/* How It Works */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-[var(--color-surface-light)]/30">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-surface-light/30">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold mb-4">
@@ -206,7 +206,7 @@ export default function LandingPage() {
               <div key={i} className="text-center p-6">
                 <div className="text-4xl font-extrabold gradient-text mb-3">{item.step}</div>
                 <h4 className="font-semibold mb-1">{item.title}</h4>
-                <p className="text-sm text-[var(--color-text-muted)]">{item.desc}</p>
+                <p className="text-sm text-text-muted">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -214,7 +214,7 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 px-4 sm:px-6 lg:px-8 border-t border-(--color-border)">
+      <footer className="py-12 px-4 sm:px-6 lg:px-8 border-t border-border">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-2">
@@ -226,13 +226,13 @@ export default function LandingPage() {
               <span className="font-bold gradient-text">EQuiz</span>
             </div>
 
-            <div className="flex items-center gap-6 text-sm text-[var(--color-text-muted)]">
-              <a href="#" className="hover:text-[var(--color-text-primary)] transition-colors">About</a>
-              <a href="#" className="hover:text-[var(--color-text-primary)] transition-colors">Privacy</a>
-              <a href="#" className="hover:text-[var(--color-text-primary)] transition-colors">Contact</a>
+            <div className="flex items-center gap-6 text-sm text-text-muted">
+              <a href="#" className="hover:text-text-primary transition-colors">About</a>
+              <a href="#" className="hover:text-text-primary transition-colors">Privacy</a>
+              <a href="#" className="hover:text-text-primary transition-colors">Contact</a>
             </div>
 
-            <p className="text-sm text-[var(--color-text-muted)]">
+            <p className="text-sm text-text-muted">
               © 2024 EQuiz. All rights reserved.
             </p>
           </div>
